@@ -2,6 +2,11 @@ let osc = null;
 let gain = null;
 let selectedWave;
 
+function octavehz(hz, octave) {
+  const val = parseFloat(octave);
+  return hz * 2 ** val;
+}
+
 window.onload = function () {
   const audioContext = new AudioContext();
   // this gets the node for the start butten and adds to it an even listener for click, when clicked the synth will play
@@ -23,12 +28,15 @@ window.onload = function () {
     gainDisplay.textContent = level;
   });
 
-  function handleSelectionChange() {
+  function handleWaveformSelectionChange() {
     let selectedRadioButton = document.querySelector(
       "input[name='wavechoice']:checked"
     );
     if (selectedRadioButton) {
       selectedWave = selectedRadioButton.value;
+      if (osc) {
+        osc.type = selectedWave;
+      }
       console.log(selectedWave);
     } else {
       console.log("No radio button is selected.");
@@ -38,7 +46,7 @@ window.onload = function () {
   document
     .querySelectorAll("input[name='wavechoice']")
     .forEach((radioButton) => {
-      radioButton.addEventListener("change", handleSelectionChange);
+      radioButton.addEventListener("change", handleWaveformSelectionChange);
     });
 
   document.getElementById("start").addEventListener("click", () => {

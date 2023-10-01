@@ -9,16 +9,42 @@
   </head>
   <body>
     <form style="padding: 15px">
-      <input type="radio" id="sinwave" name="wavechoice" value="sine">
-      <label for="sinwave">Sine</label>
-      <input type="radio" id="squarewave" name="wavechoice" value="square" checked>
-      <label for="squarewave">Square</label>
-      <input type="radio" id="triwave" name="wavechoice" value="triangle">
-      <label for="triwave">Triangle</label>
-      <input type="radio" id="sawtoothwave" name="wavechoice" value="sawtooth">
-      <label for="sawtoothwave">Sawtooth</label>
-
+      <fieldset>
+        <legend>Waveform Selection</legend>  
+        <input type="radio" id="sinwave" name="wavechoice" value="sine">
+        <label for="sinwave">Sine</label>
+        <input type="radio" id="squarewave" name="wavechoice" value="square" checked>
+        <label for="squarewave">Square</label>
+        <input type="radio" id="triwave" name="wavechoice" value="triangle">
+        <label for="triwave">Triangle</label>
+        <input type="radio" id="sawtoothwave" name="wavechoice" value="sawtooth">
+        <label for="sawtoothwave">Sawtooth</label>
+      
+      </fieldset>
     </form>
+
+    <form style="padding: 15px">
+      <fieldset>
+        <legend>Octave Selection</legend>  
+        <input type="radio" id="minus2" name="octavechoice" value="-2">
+        <label for="minus2">-2</label>
+        
+        <input type="radio" id="minus1" name="octavechoice" value="-1">
+        <label for="minus1">-1</label>
+        
+        <input type="radio" id="plus0" name="octavechoice" value="0" checked>
+        <label for="plus0">0</label>
+        
+        <input type="radio" id="plus1" name="octavechoice" value="1">
+        <label for="plus1">+1</label>
+        
+        <input type="radio" id="plus2" name="octavechoice" value="2">
+        <label for="plus2">+2</label>
+        
+      </fieldset>
+    </form>
+
+
     <div style="padding: 15px">
       <button id="start">Start</button>
       <button id="stop">Stop</button>
