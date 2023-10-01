@@ -8,10 +8,10 @@
     <title>simple-synth</title>
   </head>
   <body>
-    <form>
-      <input type="radio" id="sinwave" name="wavechoice" value="sine" checked>
+    <form style="padding: 15px">
+      <input type="radio" id="sinwave" name="wavechoice" value="sine">
       <label for="sinwave">Sine</label>
-      <input type="radio" id="squarewave" name="wavechoice" value="square">
+      <input type="radio" id="squarewave" name="wavechoice" value="square" checked>
       <label for="squarewave">Square</label>
       <input type="radio" id="triwave" name="wavechoice" value="triangle">
       <label for="triwave">Triangle</label>
@@ -19,9 +19,11 @@
       <label for="sawtoothwave">Sawtooth</label>
 
     </form>
-    <button id="start">Start</button>
-    <button id="stop">Stop</button>
-    <div style="padding: 10px;">
+    <div style="padding: 15px">
+      <button id="start">Start</button>
+      <button id="stop">Stop</button>
+    </div>
+      <div style="padding: 10px;">
       <label for="freq">Frequency</label>
       <input id="freq" type="range" min="100" max="700" value="440" step="10">
       <span id="freqDisplay">440</span>Hz
