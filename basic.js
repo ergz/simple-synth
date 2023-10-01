@@ -43,11 +43,33 @@ window.onload = function () {
     }
   }
 
+  function handleOctaveSelectionChange() {
+    let selectedRadioButton = document.querySelector(
+      "input[name='octavechoice']:checked"
+    );
+    if (selectedRadioButton) {
+      selectedOctave = selectedRadioButton.value;
+      if (osc) {
+        osc.frequency.setValueAtTime(
+          octavehz(parseFloat(freq.value), parseFloat(selectedOctave)),
+          audioContext.currentTime
+        );
+      }
+      console.log(selectedWave);
+    } else {
+      console.log("No radio button is selected.");
+    }
+  }
+
   document
     .querySelectorAll("input[name='wavechoice']")
     .forEach((radioButton) => {
       radioButton.addEventListener("change", handleWaveformSelectionChange);
     });
+
+  document.querySelectorAll("input[name='octavechoice']").forEach((rb) => {
+    rb.addEventListener("change", handleOctaveSelectionChange);
+  });
 
   document.getElementById("start").addEventListener("click", () => {
     if (!osc) {
