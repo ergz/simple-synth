@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <title>HTML 5 Boilerplate</title>
+  </head>
+  <body>
+    <button id="start">Start</button>
+    <button id="stop">Stop</button>
+    <div style="padding: 10px;">
+      <label for="freq">Frequency</label>
+      <input id="freq" type="range" min="100" max="700" value="440" step="10">
+      <span id="freqDisplay">440</span>Hz
+    </div>
+    <div style="padding: 10px;">
+      <label for="gain">Volume</label>
+      <input id="gain" type="range" min="0" max=".1" value=".05" step=".001"/>
+      <span id="gainDisplay">.5</span>
+    </div>
+    <script src="index.js"></script>
+  </body>
+</html>
