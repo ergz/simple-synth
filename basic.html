@@ -5,9 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
-    <title>HTML 5 Boilerplate</title>
+    <title>simple-synth</title>
   </head>
   <body>
+    <form>
+      <input type="radio" id="sinwave" name="wavechoice" value="sine" checked>
+      <label for="sinwave">Sine</label>
+      <input type="radio" id="squarewave" name="wavechoice" value="square">
+      <label for="squarewave">Square</label>
+      <input type="radio" id="triwave" name="wavechoice" value="triangle">
+      <label for="triwave">Triangle</label>
+      <input type="radio" id="sawtoothwave" name="wavechoice" value="sawtooth">
+      <label for="sawtoothwave">Sawtooth</label>
+
+    </form>
     <button id="start">Start</button>
     <button id="stop">Stop</button>
     <div style="padding: 10px;">

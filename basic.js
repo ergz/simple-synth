@@ -2,6 +2,10 @@ let osc = null;
 let gain = null;
 
 window.onload = function () {
+  let selectedWave = document.querySelector(
+    "input[name='wavechoice']:checked"
+  ).value;
+
   const audioContext = new AudioContext();
   // this gets the node for the start butten and adds to it an even listener for click, when clicked the synth will play
 
@@ -31,7 +35,7 @@ window.onload = function () {
       gain = audioContext.createGain();
     }
 
-    osc.type = "sine";
+    osc.type = "" + selectedWave;
     osc.frequency.setValueAtTime(
       parseFloat(freq.value),
       audioContext.currentTime
@@ -50,5 +54,16 @@ window.onload = function () {
   document.getElementById("stop").addEventListener("click", () => {
     osc.stop();
     osc = null;
+  });
+
+  function handleSelectionChange() {
+    let selectedValue = document.querySelector(
+      'input[name="choice"]:checked'
+    ).value;
+    console.log(selectedValue);
+  }
+
+  document.querySelectorAll("input[name='wavechoice']").forEach((rb) => {
+    rb.addEventListener("change", handleSelectionChange);
   });
 };
