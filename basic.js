@@ -130,4 +130,16 @@ window.onload = function () {
     osc.stop();
     osc = null;
   });
+
+  document.getElementById("arp").addEventListener("click", () => {
+    const notes = ["C", "D", "E", "F", "G", "A", "B"];
+    for (let i = 0; i < notes.length; i++) {
+      setTimeout(2000);
+      console.log(notes[i]);
+      osc.frequency.setValueAtTime(
+        noteToHz(notes[i]),
+        audioContext.currentTime
+      );
+    }
+  });
 };
