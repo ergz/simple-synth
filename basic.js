@@ -1,32 +1,35 @@
 let osc = null;
 let gain = null;
-let selectedWave;
+let selectedWave = "square";
+let baseFreq = 440;
+let currentFreq = 261.63;
 
 function octavehz(hz, octave) {
   const val = parseFloat(octave);
   return hz * 2 ** val;
 }
 
+function noteToHz(note) {
+  switch (note) {
+    case "C":
+      return 261.63;
+    case "D":
+      return 269.66;
+    case "E":
+      return 329.63;
+    case "F":
+      return 349.23;
+    case "G":
+      return 392;
+    case "A":
+      return 440;
+    case "B":
+      return 493.88;
+  }
+}
+
 window.onload = function () {
   const audioContext = new AudioContext();
-  // this gets the node for the start butten and adds to it an even listener for click, when clicked the synth will play
-
-  const freqSlider = document.getElementById("freq");
-  const freqDisplay = document.getElementById("freqDisplay");
-  freqSlider.addEventListener("input", () => {
-    const freq = parseFloat(freqSlider.value);
-    osc.frequency.setValueAtTime(freq, audioContext.currentTime);
-    freqDisplay.textContent = freq;
-  });
-
-  const gainSlider = document.getElementById("gain");
-  const gainDisplay = document.getElementById("gainDisplay");
-  gainSlider.addEventListener("input", () => {
-    const level = parseFloat(gainSlider.value);
-    console.log(level);
-    gain.gain.setTargetAtTime(level, audioContext.currentTime, 0.01);
-    gainDisplay.textContent = level;
-  });
 
   function handleWaveformSelectionChange() {
     let selectedRadioButton = document.querySelector(
@@ -48,18 +51,37 @@ window.onload = function () {
       "input[name='octavechoice']:checked"
     );
     if (selectedRadioButton) {
-      selectedOctave = selectedRadioButton.value;
+      selectedOctave = parseFloat(selectedRadioButton.value);
       if (osc) {
-        osc.frequency.setValueAtTime(
-          octavehz(parseFloat(freq.value), parseFloat(selectedOctave)),
-          audioContext.currentTime
-        );
+        newFreq = octavehz(currentFreq, selectedOctave);
+        console.log("selected base frequency " + newFreq);
+        osc.frequency.setValueAtTime(newFreq, audioContext.currentTime);
       }
-      console.log(selectedWave);
     } else {
       console.log("No radio button is selected.");
     }
   }
+
+  function handleNoteChange() {
+    let selectedRadioButton = document.querySelector(
+      "input[name='notechoice']:checked"
+    );
+    if (selectedRadioButton) {
+      selectedNote = selectedRadioButton.value;
+      console.log(selectedNote);
+      if (osc) {
+        currentFreq = noteToHz(selectedNote);
+        osc.frequency.setValueAtTime(currentFreq, audioContext.currentTime);
+      }
+      console.log(octavehz(baseFreq, selectedOctave));
+    } else {
+      console.log("No radio button is selected.");
+    }
+  }
+
+  document.querySelectorAll("input[name='notechoice']").forEach((rb) => {
+    rb.addEventListener("change", handleNoteChange);
+  });
 
   document
     .querySelectorAll("input[name='wavechoice']")
@@ -71,20 +93,28 @@ window.onload = function () {
     rb.addEventListener("change", handleOctaveSelectionChange);
   });
 
+  const gainSlider = document.getElementById("gain");
+  const gainDisplay = document.getElementById("gainDisplay");
+  gainSlider.addEventListener("input", () => {
+    const level = parseFloat(gainSlider.value);
+    console.log(level);
+    gain.gain.setTargetAtTime(level, audioContext.currentTime, 0.01);
+    gainDisplay.textContent = level;
+  });
+
   document.getElementById("start").addEventListener("click", () => {
     if (!osc) {
       osc = audioContext.createOscillator();
+      console.log("new osc created!");
     }
 
     if (!gain) {
       gain = audioContext.createGain();
     }
 
+    console.log(selectedWave);
     osc.type = selectedWave;
-    osc.frequency.setValueAtTime(
-      parseFloat(freq.value),
-      audioContext.currentTime
-    );
+    osc.frequency.setValueAtTime(currentFreq, audioContext.currentTime);
     gain.gain.setTargetAtTime(
       parseFloat(gainSlider.value),
       audioContext.currentTime,

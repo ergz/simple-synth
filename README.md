@@ -12,3 +12,8 @@ that Fabilter's Synth One has:
 - [ ] Octave Selector
 - [ ] Noise 
 - [ ] Keyboard
+
+# Effects 
+
+- [ ] Reverb
+- [ ] Delay
