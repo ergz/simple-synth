@@ -31,6 +31,29 @@ function noteToHz(note) {
 window.onload = function () {
   const audioContext = new AudioContext();
 
+  function updateOscFrequency() {
+    let selectedNoteButton = document.querySelector(
+      "input[name='notechoice']:checked"
+    );
+    console.log("note choice changed to: " + selectedNoteButton.value);
+    let selectedOctaveButton = document.querySelector(
+      "input[name='octavechoice']:checked"
+    );
+
+    if (selectedNoteButton && selectedOctaveButton) {
+      let selectedNote = selectedNoteButton.value;
+      let selectedOctave = parseFloat(selectedOctaveButton.value);
+      let noteFreq = noteToHz(selectedNote);
+      let freqOctaveChoice = octavehz(noteFreq, selectedOctave);
+      if (osc) {
+        osc.frequency.setValueAtTime(
+          freqOctaveChoice,
+          audioContext.currentTime
+        );
+      }
+    }
+  }
+
   function handleWaveformSelectionChange() {
     let selectedRadioButton = document.querySelector(
       "input[name='wavechoice']:checked"
@@ -46,41 +69,8 @@ window.onload = function () {
     }
   }
 
-  function handleOctaveSelectionChange() {
-    let selectedRadioButton = document.querySelector(
-      "input[name='octavechoice']:checked"
-    );
-    if (selectedRadioButton) {
-      selectedOctave = parseFloat(selectedRadioButton.value);
-      if (osc) {
-        newFreq = octavehz(currentFreq, selectedOctave);
-        console.log("selected base frequency " + newFreq);
-        osc.frequency.setValueAtTime(newFreq, audioContext.currentTime);
-      }
-    } else {
-      console.log("No radio button is selected.");
-    }
-  }
-
-  function handleNoteChange() {
-    let selectedRadioButton = document.querySelector(
-      "input[name='notechoice']:checked"
-    );
-    if (selectedRadioButton) {
-      selectedNote = selectedRadioButton.value;
-      console.log(selectedNote);
-      if (osc) {
-        currentFreq = noteToHz(selectedNote);
-        osc.frequency.setValueAtTime(currentFreq, audioContext.currentTime);
-      }
-      console.log(octavehz(baseFreq, selectedOctave));
-    } else {
-      console.log("No radio button is selected.");
-    }
-  }
-
   document.querySelectorAll("input[name='notechoice']").forEach((rb) => {
-    rb.addEventListener("change", handleNoteChange);
+    rb.addEventListener("change", updateOscFrequency);
   });
 
   document
@@ -90,8 +80,49 @@ window.onload = function () {
     });
 
   document.querySelectorAll("input[name='octavechoice']").forEach((rb) => {
-    rb.addEventListener("change", handleOctaveSelectionChange);
+    rb.addEventListener("change", updateOscFrequency);
   });
+
+  window.addEventListener("keydown", (event) => {
+    switch (event.key) {
+      case "1":
+        selectNote("C");
+        break;
+      case "2":
+        selectNote("D");
+        break;
+      case "3":
+        selectNote("E");
+        break;
+      case "4":
+        selectNote("F");
+        break;
+      case "5":
+        selectNote("G");
+        break;
+      case "6":
+        selectNote("A");
+        break;
+      case "7":
+        selectNote("B");
+        break;
+      default:
+        // If the key is not 1-7, do nothing
+        break;
+    }
+  });
+
+  function selectNote(note) {
+    const radioButton = document.querySelector(
+      `input[name='notechoice'][value='${note}']`
+    );
+    if (radioButton) {
+      radioButton.checked = true;
+      updateOscFrequency();
+    } else {
+      console.error(`Radio button for note ${note} not found`);
+    }
+  }
 
   const gainSlider = document.getElementById("gain");
   const gainDisplay = document.getElementById("gainDisplay");
@@ -134,7 +165,9 @@ window.onload = function () {
   document.getElementById("arp").addEventListener("click", () => {
     const notes = ["C", "D", "E", "F", "G", "A", "B"];
     for (let i = 0; i < notes.length; i++) {
-      setTimeout(2000);
+      for (let j = 0; j < 1000; j++) {
+        let x = 100;
+      }
       console.log(notes[i]);
       osc.frequency.setValueAtTime(
         noteToHz(notes[i]),
