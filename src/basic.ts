@@ -9,7 +9,7 @@ function octavehz(hz: number, octave: string): number {
   return hz * 2 ** val;
 }
 
-function noteToHz(note: string): number | undefined {
+function noteToHz(note: string): number {
   switch (note) {
     case "C":
       return 261.63;
@@ -25,11 +25,13 @@ function noteToHz(note: string): number | undefined {
       return 440;
     case "B":
       return 493.88;
+    default:
+      return 0;
   }
 }
 
 window.onload = function () {
-  const audioContext = new AudioContext();
+  const audioContext: AudioContext = new AudioContext();
 
   function updateOscFrequency() {
     let selectedNoteButton = document.querySelector(

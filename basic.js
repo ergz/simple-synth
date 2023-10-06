@@ -3,6 +3,8 @@ let gain = null;
 let selectedWave = "square";
 let baseFreq = 440;
 let currentFreq = 261.63;
+let notes = ["C", "D", "E", "F", "G", "A", "B"];
+let arpInterval = null;
 
 function octavehz(hz, octave) {
   const val = parseFloat(octave);
@@ -14,7 +16,7 @@ function noteToHz(note) {
     case "C":
       return 261.63;
     case "D":
-      return 269.66;
+      return 293.66;
     case "E":
       return 329.63;
     case "F":
@@ -25,6 +27,8 @@ function noteToHz(note) {
       return 440;
     case "B":
       return 493.88;
+    default:
+      return 0;
   }
 }
 
@@ -35,7 +39,6 @@ window.onload = function () {
     let selectedNoteButton = document.querySelector(
       "input[name='notechoice']:checked"
     );
-    console.log("note choice changed to: " + selectedNoteButton.value);
     let selectedOctaveButton = document.querySelector(
       "input[name='octavechoice']:checked"
     );
@@ -83,8 +86,20 @@ window.onload = function () {
     rb.addEventListener("change", updateOscFrequency);
   });
 
+  // handle keyboard
   window.addEventListener("keydown", (event) => {
+    if (event.repeat) return;
     switch (event.key) {
+      // play/stop
+      case "s":
+        {
+          if (osc) {
+            osc.stop();
+            osc = null;
+          }
+        }
+        break;
+      // "piano roll"
       case "1":
         selectNote("C");
         break;
@@ -124,6 +139,7 @@ window.onload = function () {
     }
   }
 
+  // gain slider
   const gainSlider = document.getElementById("gain");
   const gainDisplay = document.getElementById("gainDisplay");
   gainSlider.addEventListener("input", () => {
@@ -133,6 +149,7 @@ window.onload = function () {
     gainDisplay.textContent = level;
   });
 
+  // start button
   document.getElementById("start").addEventListener("click", () => {
     if (!osc) {
       osc = audioContext.createOscillator();
@@ -143,7 +160,6 @@ window.onload = function () {
       gain = audioContext.createGain();
     }
 
-    console.log(selectedWave);
     osc.type = selectedWave;
     osc.frequency.setValueAtTime(currentFreq, audioContext.currentTime);
     gain.gain.setTargetAtTime(
@@ -157,22 +173,45 @@ window.onload = function () {
     audioContext.resume();
   });
 
+  // stop button
   document.getElementById("stop").addEventListener("click", () => {
-    osc.stop();
-    osc = null;
-  });
-
-  document.getElementById("arp").addEventListener("click", () => {
-    const notes = ["C", "D", "E", "F", "G", "A", "B"];
-    for (let i = 0; i < notes.length; i++) {
-      for (let j = 0; j < 1000; j++) {
-        let x = 100;
+    if (osc) {
+      osc.stop();
+      osc = null;
+      if (arpInterval) {
+        clearInterval(arpInterval);
+        arpInterval = null;
       }
-      console.log(notes[i]);
-      osc.frequency.setValueAtTime(
-        noteToHz(notes[i]),
-        audioContext.currentTime
-      );
+    } else {
+      console.log("no osc to stop");
     }
   });
+
+  // arp - work in progress
+  function startArp() {
+    if (!arpInterval) {
+      baseNote = "C";
+      let currentOctave = -2;
+      if (osc) {
+        arpInterval = setInterval(() => {
+          if (currentOctave > 2) {
+            currentOctave = -2;
+          }
+
+          let noteFreq = noteToHz(baseNote);
+          let freqOctaveChoice = octavehz(noteFreq, currentOctave);
+          osc.frequency.setValueAtTime(
+            freqOctaveChoice,
+            audioContext.currentTime
+          );
+
+          currentOctave++;
+        }, 100);
+      } else {
+        console.log("no osc to run arp on");
+      }
+    }
+  }
+
+  document.getElementById("arp").addEventListener("click", startArp);
 };

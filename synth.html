@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <title>simple-synth</title>
+</head>
+<body>
+    <script src="synth.js"></script>
+    
+    <div>
+        <form style="padding: 15px">
+            <legend>Voice 1</legend>  
+            <input type="radio" id="wave1_sinwave" name="wavechoice1" value="sine" checked>
+            <label for="wave1_sinwave">Sine</label>
+            <input type="radio" id="wave1_squarewave" name="wavechoice1" value="square">
+            <label for="wave1_squarewave">Square</label>
+            <input type="radio" id="wave1_triwave" name="wavechoice1" value="triangle">
+            <label for="wave1_triwave">Triangle</label>
+            <input type="radio" id="wave1_sawtoothwave" name="wavechoice1" value="sawtooth">
+            <label for="wave1_sawtoothwave">Sawtooth</label>
+        </form>
+        <button id="activateVoice1">Start</button>
+    </div>
+    
+    <form style="padding: 15px">
+        <legend>Voice 2</legend>  
+        <input type="radio" id="wave2_sinwave" name="wavechoice2" value="sine" checked>
+        <label for="wave2_sinwave">Sine</label>
+        <input type="radio" id="wave2_squarewave" name="wavechoice2" value="square">
+        <label for="wave2_squarewave">Square</label>
+        <input type="radio" id="wave2_triwave" name="wavechoice2" value="triangle">
+        <label for="wave2_triwave">Triangle</label>
+        <input type="radio" id="wave2_sawtoothwave" name="wavechoice2" value="sawtooth">
+        <label for="wave2_sawtoothwave">Sawtooth</label>
+    </form>
+    <button id="activateVoice2">Start</button>
+    
+    
+    <form style="padding: 15px">
+        <fieldset>
+            <legend>Keyboard</legend>  
+            <input type="radio" id="noteC"  name="notechoice" value="C" checked>
+            <label for="C">C</label>
+            
+            <input type="radio" id="noteD" name="notechoice" value="D">
+            <label for="D">D</label>
+            
+            <input type="radio" id="noteE" name="notechoice" value="E">
+            <label for="E">E</label>
+            
+            <input type="radio" id="noteF" name="notechoice" value="F">
+            <label for="F">F</label>
+            
+            <input type="radio" id="noteG" name="notechoice" value="G">
+            <label for="G">G</label>
+            
+            <input type="radio" id="noteA" name="notechoice" value="A">
+            <label for="A">A</label>
+            
+            <input type="radio" id="noteB" name="notechoice" value="B">
+            <label for="B">B</label>
+            
+        </fieldset>
+    </form>
+    
+    
+    <form style="padding: 15px">
+        <fieldset>
+            <legend>Octave Selection</legend>  
+            <input type="radio" id="minus2" name="octavechoice" value="-2">
+            <label for="minus2">-2</label>
+            
+            <input type="radio" id="minus1" name="octavechoice" value="-1">
+            <label for="minus1">-1</label>
+            
+            <input type="radio" id="plus0" name="octavechoice" value="0" checked>
+            <label for="plus0">0</label>
+            
+            <input type="radio" id="plus1" name="octavechoice" value="1">
+            <label for="plus1">+1</label>
+            
+            <input type="radio" id="plus2" name="octavechoice" value="2">
+            <label for="plus2">+2</label>
+            
+        </fieldset>
+    </form>
+    
+    
+    <div style="padding: 15px">
+        <button id="start">Start</button>
+        <button id="stop">Stop</button>
+        <button id="arp">Arp</button>
+        <div style="padding: 10px;">
+            <label for="gain">Volume</label>
+            <input id="gain" type="range" min="0" max=".1" value=".05" step=".001"/>
+            <span id="gainDisplay">.5</span>
+        </div>
+    </body>
+    </html>
