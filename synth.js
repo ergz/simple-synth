@@ -25,7 +25,7 @@ class Synth {
     this.gain = this.audioContext.createGain();
     this.oscillators = [
       this.createOscillator("sawtooth", 440, 0),
-      this.createOscillator("sawtooth", 435, 0),
+      this.createOscillator("sawtooth", 440, 0),
       this.createOscillator("sawtooth", 440, 0),
     ];
     this.gain.connect(this.audioContext.destination);
@@ -152,11 +152,11 @@ window.onload = function () {
       let osc1 = synth.oscillators[0];
       if (osc1.isPlaying) {
         synth.stopOsc(osc1);
-        event.target.textContent = "Start";
+        event.target.textContent = "On";
         event.target.style.backgroundColor = "greenyellow";
       } else {
         synth.startOsc(osc1);
-        event.target.textContent = "Stop";
+        event.target.textContent = "Off";
         event.target.style.backgroundColor = "red";
       }
     });
@@ -169,11 +169,11 @@ window.onload = function () {
       let osc2 = synth.oscillators[1];
       if (osc2.isPlaying) {
         synth.stopOsc(osc2);
-        event.target.textContent = "Start";
+        event.target.textContent = "On";
         event.target.style.backgroundColor = "greenyellow";
       } else {
         synth.startOsc(osc2);
-        event.target.textContent = "Stop";
+        event.target.textContent = "Off";
         event.target.style.backgroundColor = "red";
       }
     });
@@ -186,11 +186,11 @@ window.onload = function () {
       let osc3 = synth.oscillators[2];
       if (osc3.isPlaying) {
         synth.stopOsc(osc3);
-        event.target.textContent = "Start";
+        event.target.textContent = "On";
         event.target.style.backgroundColor = "greenyellow";
       } else {
         synth.startOsc(osc3);
-        event.target.textContent = "Stop";
+        event.target.textContent = "Off";
         event.target.style.backgroundColor = "red";
       }
     });
