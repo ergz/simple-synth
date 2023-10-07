@@ -11,7 +11,7 @@
     <script src="synth.js"></script>
     
     <div>
-        <form style="padding: 15px">
+        <form style="padding: 5px">
             <legend>Voice 1</legend>  
             <input type="radio" id="wave1_sinwave" name="wavechoice1" value="sine" checked>
             <label for="wave1_sinwave">Sine</label>
@@ -22,35 +22,28 @@
             <input type="radio" id="wave1_sawtoothwave" name="wavechoice1" value="sawtooth">
             <label for="wave1_sawtoothwave">Sawtooth</label>
         </form>
-        <button id="activateVoice1" style="background-color: greenyellow;">Start</button>
-        <form style="padding: 15px">
+        
+        <div style="padding: 5px">
             <fieldset>
-                <legend>Octave Selection</legend>  
-                <input type="radio" id="minus2" name="octavechoice1" value="-2">
-                <label for="minus2">-2</label>
-                
-                <input type="radio" id="minus1" name="octavechoice1" value="-1">
-                <label for="minus1">-1</label>
-                
-                <input type="radio" id="plus0" name="octavechoice1" value="0" checked>
-                <label for="plus0">0</label>
-                
-                <input type="radio" id="plus1" name="octavechoice1" value="1">
-                <label for="plus1">+1</label>
-                
-                <input type="radio" id="plus2" name="octavechoice1" value="2">
-                <label for="plus2">+2</label>
-                
+                <legend>Octave Selection</legend>
+                <button id="octavedown1">-</button>
+                <input type="text" id="octavedisplay1" value="0" readonly style="width: 2em; text-align: center;">
+                <button id="octaveup1">+</button>
             </fieldset>
-        </form>
-        <label for="detunevoice1">detune voice</label>
-        <input id="detunevoice1" type="range" min="-3" max="3" value="0" step=".1"/>
-        <span id="detunevoice1display">0</span>
+        </div>
+        
+        <div style="padding: 5px">
+            <label for="detunevoice1">detune voice</label>    
+            <input id="detunevoice1" type="range" min="-5" max="5" value="0" step=".1"/>
+            <span id="detunevoice1display">0</span>
+        </div>
+        
+        <button id="activateVoice1" style="background-color: greenyellow;">Start</button>
     </div>
     
     <div>
         
-        <form style="padding: 15px">
+        <form style="padding: 5px">
             <legend>Voice 2</legend>  
             <input type="radio" id="wave2_sinwave" name="wavechoice2" value="sine" checked>
             <label for="wave2_sinwave">Sine</label>
@@ -61,32 +54,21 @@
             <input type="radio" id="wave2_sawtoothwave" name="wavechoice2" value="sawtooth">
             <label for="wave2_sawtoothwave">Sawtooth</label>
         </form>
-        <button id="activateVoice2" style="background-color: greenyellow;">Start</button>
-        <form style="padding: 15px">
+        <div style="padding: 5px">
             <fieldset>
-                <legend>Octave Selection</legend>  
-                <input type="radio" id="minus2" name="octavechoice2" value="-2">
-                <label for="minus2">-2</label>
-                
-                <input type="radio" id="minus1" name="octavechoice2" value="-1">
-                <label for="minus1">-1</label>
-                
-                <input type="radio" id="plus0" name="octavechoice2" value="0" checked>
-                <label for="plus0">0</label>
-                
-                <input type="radio" id="plus1" name="octavechoice2" value="1">
-                <label for="plus1">+1</label>
-                
-                <input type="radio" id="plus2" name="octavechoice2" value="2">
-                <label for="plus2">+2</label>
-                
+                <legend>Octave Selection</legend>
+                <button id="octavedown2">-</button>
+                <input type="text" id="octavedisplay2" value="0" readonly style="width: 2em; text-align: center;">
+                <button id="octaveup2">+</button>
             </fieldset>
-        </form>
+        </div>
+        
+        <button id="activateVoice2" style="background-color: greenyellow;">Start</button>
     </div>
     
     <div>
         
-        <form style="padding: 15px">
+        <form style="padding: 5px">
             <legend>Voice 2</legend>  
             <input type="radio" id="wave3_sinwave" name="wavechoice2" value="sine" checked>
             <label for="wave3_sinwave">Sine</label>
@@ -97,27 +79,16 @@
             <input type="radio" id="wave3_sawtoothwave" name="wavechoice2" value="sawtooth">
             <label for="wave3_sawtoothwave">Sawtooth</label>
         </form>
-        <button id="activateVoice3" style="background-color: greenyellow;">Start</button>
-        <form style="padding: 15px">
+        <div style="padding: 5px">
             <fieldset>
-                <legend>Octave Selection</legend>  
-                <input type="radio" id="minus2" name="octavechoice3" value="-2">
-                <label for="minus2">-2</label>
-                
-                <input type="radio" id="minus1" name="octavechoice3" value="-1">
-                <label for="minus1">-1</label>
-                
-                <input type="radio" id="plus0" name="octavechoice3" value="0" checked>
-                <label for="plus0">0</label>
-                
-                <input type="radio" id="plus1" name="octavechoice3" value="1">
-                <label for="plus1">+1</label>
-                
-                <input type="radio" id="plus2" name="octavechoice3" value="2">
-                <label for="plus2">+2</label>
-                
+                <legend>Octave Selection</legend>
+                <button id="octavedown3">-</button>
+                <input type="text" id="octavedisplay3" value="0" readonly style="width: 2em; text-align: center;">
+                <button id="octaveup3">+</button>
             </fieldset>
-        </form>
+        </div>
+        
+        <button id="activateVoice3" style="background-color: greenyellow;">Start</button>
     </div>
     
     

@@ -24,14 +24,14 @@ class Synth {
     this.audioContext = new AudioContext();
     this.gain = this.audioContext.createGain();
     this.oscillators = [
-      this.createOscillator("sawtooth", hzoctave(440, -1)),
-      this.createOscillator("sawtooth", hzoctave(435, -1)),
-      this.createOscillator("sawtooth", hzoctave(440, -3)),
+      this.createOscillator("sawtooth", 440, 0),
+      this.createOscillator("sawtooth", 435, 0),
+      this.createOscillator("sawtooth", 440, 0),
     ];
     this.gain.connect(this.audioContext.destination);
   }
 
-  createOscillator(type = "sine", freq = 440) {
+  createOscillator(type = "sine", freq = 440, startOctave) {
     const osc = this.audioContext.createOscillator();
     osc.type = type;
     osc.frequency.setValueAtTime(freq, this.audioContext.currentTime);
@@ -40,7 +40,12 @@ class Synth {
     osc.connect(this.gain);
 
     // wrap around the container and add to array
-    const oscContainer = { osc, isPlaying: false, baseFreq: freq };
+    const oscContainer = {
+      osc,
+      isPlaying: false,
+      baseFreq: freq,
+      currentOctave: startOctave,
+    };
     return oscContainer;
   }
 
@@ -77,36 +82,67 @@ class Synth {
   }
 }
 
-function hzoctave(freq, octave) {
-  return freq * 2 ** octave;
+function updateFrequency(
+  event,
+  synth,
+  oscContainer,
+  octaveShift,
+  detuneAmount
+) {
+  let baseFreq = oscContainer.baseFreq;
+  let currentFreq = baseFreq;
+  if (octaveShift) {
+    if (octaveShift === "up") {
+      currentFreq = baseFreq * 2;
+      oscContainer.baseFreq = currentFreq;
+    } else {
+      currentFreq = baseFreq / 2;
+      oscContainer.baseFreq = currentFreq;
+    }
+  }
+
+  if (detuneAmount) {
+    currentFreq = currentFreq + detuneAmount;
+  }
+
+  console.log(currentFreq);
+
+  oscContainer.osc.frequency.setValueAtTime(
+    currentFreq,
+    synth.audioContext.currentTime
+  );
+}
+
+function setupOctaveControls(voiceIndex, synth) {
+  // Get the display element for the current voice
+  let octaveDisplay = document.getElementById(
+    "octavedisplay" + (voiceIndex + 1)
+  );
+
+  // Set up event listener for the octave down button for the current voice
+  document
+    .getElementById("octavedown" + (voiceIndex + 1))
+    .addEventListener("click", (event) => {
+      const osc = synth.oscillators[voiceIndex];
+      osc.currentOctave--;
+      octaveDisplay.value = osc.currentOctave;
+      updateFrequency(event, synth, osc, "down", voiceIndex);
+    });
+
+  // Set up event listener for the octave up button for the current voice
+  document
+    .getElementById("octaveup" + (voiceIndex + 1))
+    .addEventListener("click", (event) => {
+      const osc = synth.oscillators[voiceIndex];
+      osc.currentOctave++;
+      octaveDisplay.value = osc.currentOctave;
+      updateFrequency(event, synth, osc, "up", voiceIndex);
+    });
 }
 
 window.onload = function () {
   let synth = new Synth();
   // start button
-
-  function updateFrequency(event, oscContainer, octaveSelected, detuneAmount) {
-    let baseFreq = oscContainer.baseFreq;
-    let currentFreq = baseFreq;
-    if (octaveSelected) {
-      console.log("baseFreq: " + baseFreq);
-      console.log("octaveSelected: " + octaveSelected);
-
-      currentFreq = hzoctave(baseFreq, parseFloat(octaveSelected));
-      oscContainer.baseFreq = currentFreq;
-    }
-
-    if (detuneAmount) {
-      currentFreq = baseFreq + detuneAmount;
-    }
-
-    console.log(currentFreq);
-
-    oscContainer.osc.frequency.setValueAtTime(
-      currentFreq,
-      synth.audioContext.currentTime
-    );
-  }
 
   document
     .getElementById("activateVoice1")
@@ -159,57 +195,10 @@ window.onload = function () {
       }
     });
 
-  // update the waveforms
-  // document.querySelectorAll("input[name='wavechoice1']").forEach((radioButton) => {
-  //   radioButton.addEventListener("change", (event) => {
-
-  //     updateFrequency(event, synth.oscillators[0], null, null, noteSelected)
-  //   })
-  // })
-
-  document
-    .querySelectorAll("input[name='notechoice']")
-    .forEach((radioButton) => {
-      console.log("note changed");
-      radioButton.addEventListener("change", updateFrequency, null, null);
-    });
-
-  document
-    .querySelectorAll("input[name='octavechoice1']")
-    .forEach((radioButton) => {
-      console.log("octave changed");
-      radioButton.addEventListener("change", (event) => {
-        let octaveSelected = document.querySelector(
-          "input[name='octavechoice1']:checked"
-        ).value;
-        updateFrequency(event, synth.oscillators[0], octaveSelected, 0);
-      });
-    });
-
-  document
-    .querySelectorAll("input[name='octavechoice2']")
-    .forEach((radioButton) => {
-      console.log("octave changed");
-      radioButton.addEventListener("change", (event) => {
-        let octaveSelected = document.querySelector(
-          "input[name='octavechoice2']:checked"
-        ).value;
-        updateFrequency(event, synth.oscillators[1], octaveSelected, 0);
-      });
-    });
-
-  document
-    .querySelectorAll("input[name='octavechoice3']")
-    .forEach((radioButton) => {
-      console.log("octave changed");
-      radioButton.addEventListener("change", (event) => {
-        let octaveSelected = document.querySelector(
-          "input[name='octavechoice3']:checked"
-        ).value;
-        updateFrequency(event, synth.oscillators[2], octaveSelected, 0);
-      });
-    });
-
+  // Loop through each voice and set up its octave control buttons
+  for (let i = 0; i < synth.oscillators.length; i++) {
+    setupOctaveControls(i, synth); // Call setupOctaveControls for each voice
+  }
   // detune
   const detuneSliderVoice1 = document.getElementById("detunevoice1");
   const detunevoice1Display = document.getElementById("detunevoice1display");
@@ -217,6 +206,6 @@ window.onload = function () {
     let osc = synth.oscillators[0];
     let detune = parseFloat(detuneSliderVoice1.value);
     console.log(detune);
-    updateFrequency(event, osc, null, detune);
+    updateFrequency(event, synth, osc, null, detune);
   });
 };
