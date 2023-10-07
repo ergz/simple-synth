@@ -24,9 +24,9 @@ class Synth {
     this.audioContext = new AudioContext();
     this.gain = this.audioContext.createGain();
     this.oscillators = [
-      this.createOscillator("sawtooth", 440, 0),
-      this.createOscillator("sawtooth", 440, 0),
-      this.createOscillator("sawtooth", 440, 0),
+      this.createOscillator("sawtooth", 261.63, 0),
+      this.createOscillator("sawtooth", 261.63, 0),
+      this.createOscillator("sawtooth", 261.63, 0),
     ];
     this.gain.connect(this.audioContext.destination);
   }
@@ -86,11 +86,14 @@ function updateFrequency(
   event,
   synth,
   oscContainer,
+  voiceIndex,
+  note,
   octaveShift,
   detuneAmount
 ) {
   let baseFreq = oscContainer.baseFreq;
   let currentFreq = baseFreq;
+
   if (octaveShift) {
     if (octaveShift === "up") {
       currentFreq = baseFreq * 2;
@@ -99,6 +102,21 @@ function updateFrequency(
       currentFreq = baseFreq / 2;
       oscContainer.baseFreq = currentFreq;
     }
+  }
+
+  if (note) {
+    let noteInHz = noteToHz(note);
+    // if the note in hz is not in the octave the oscillator is currently at
+    // I will need to transform it down to the correct octave.
+    currentFreq = noteInHz;
+    oscContainer.baseFreq = noteInHz;
+    oscContainer.currentOctave = 0;
+    let octaveDisplay = document.getElementById(
+      "octavedisplay" + (voiceIndex + 1)
+    );
+    octaveDisplay.value = 0;
+    console.log(noteInHz);
+    console.log("current octave for voice: " + oscContainer.currentOctave);
   }
 
   if (detuneAmount) {
@@ -126,7 +144,7 @@ function setupOctaveControls(voiceIndex, synth) {
       const osc = synth.oscillators[voiceIndex];
       osc.currentOctave--;
       octaveDisplay.value = osc.currentOctave;
-      updateFrequency(event, synth, osc, "down", voiceIndex);
+      updateFrequency(event, synth, osc, voiceIndex, null, "down", null);
     });
 
   // Set up event listener for the octave up button for the current voice
@@ -136,7 +154,7 @@ function setupOctaveControls(voiceIndex, synth) {
       const osc = synth.oscillators[voiceIndex];
       osc.currentOctave++;
       octaveDisplay.value = osc.currentOctave;
-      updateFrequency(event, synth, osc, "up", voiceIndex);
+      updateFrequency(event, synth, osc, voiceIndex, null, "up", null);
     });
 }
 
@@ -195,6 +213,20 @@ window.onload = function () {
       }
     });
 
+  // handle note changes
+  document.querySelectorAll("input[name='notechoice']").forEach((rb) => {
+    rb.addEventListener("change", (event) => {
+      let noteSelected = document.querySelector(
+        "input[name='notechoice']:checked"
+      ).value;
+
+      for (let i = 0; i < synth.oscillators.length; i++) {
+        let osc = synth.oscillators[i];
+        updateFrequency(event, synth, osc, i, noteSelected, null, null);
+      }
+    });
+  });
+
   // Loop through each voice and set up its octave control buttons
   for (let i = 0; i < synth.oscillators.length; i++) {
     setupOctaveControls(i, synth); // Call setupOctaveControls for each voice
@@ -206,6 +238,6 @@ window.onload = function () {
     let osc = synth.oscillators[0];
     let detune = parseFloat(detuneSliderVoice1.value);
     console.log(detune);
-    updateFrequency(event, synth, osc, null, detune);
+    updateFrequency(event, synth, osc, 0, null, null, detune);
   });
 };
