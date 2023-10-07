@@ -40,7 +40,7 @@ class Synth {
     osc.connect(this.gain);
 
     // wrap around the container and add to array
-    const oscContainer = { osc, isPlaying: false };
+    const oscContainer = { osc, isPlaying: false, baseFreq: freq };
     return oscContainer;
   }
 
@@ -85,32 +85,27 @@ window.onload = function () {
   let synth = new Synth();
   // start button
 
-  function updateFrequency(event, oscContainer, octaveid, detuneAmount) {
-    console.log("the value of octaveid: " + octaveid);
-    console.log("the value of detuneAmount: " + detuneAmount);
-    let selectedNote = document.querySelector(
-      "input[name='notechoice']:checked"
-    ).value;
+  function updateFrequency(event, oscContainer, octaveSelected, detuneAmount) {
+    let baseFreq = oscContainer.baseFreq;
+    let currentFreq = baseFreq;
+    if (octaveSelected) {
+      console.log("baseFreq: " + baseFreq);
+      console.log("octaveSelected: " + octaveSelected);
 
-    if (octaveid) {
-      console.log("in the octave update");
-      let selectedOctave = document.querySelector(
-        `input[name='${octaveid}']:checked`
-      ).value;
-
-      oscContainer.osc.frequency.setValueAtTime(
-        hzoctave(noteToHz(selectedNote), parseFloat(selectedOctave)),
-        synth.audioContext.currentTime
-      );
+      currentFreq = hzoctave(baseFreq, parseFloat(octaveSelected));
+      oscContainer.baseFreq = currentFreq;
     }
 
     if (detuneAmount) {
-      let currFreq = oscContainer.osc.frequency.value;
-      oscContainer.osc.frequency.setValueAtTime(
-        currFreq + detuneAmount,
-        synth.audioContext.currentTime
-      );
+      currentFreq = baseFreq + detuneAmount;
     }
+
+    console.log(currentFreq);
+
+    oscContainer.osc.frequency.setValueAtTime(
+      currentFreq,
+      synth.audioContext.currentTime
+    );
   }
 
   document
@@ -164,6 +159,14 @@ window.onload = function () {
       }
     });
 
+  // update the waveforms
+  // document.querySelectorAll("input[name='wavechoice1']").forEach((radioButton) => {
+  //   radioButton.addEventListener("change", (event) => {
+
+  //     updateFrequency(event, synth.oscillators[0], null, null, noteSelected)
+  //   })
+  // })
+
   document
     .querySelectorAll("input[name='notechoice']")
     .forEach((radioButton) => {
@@ -176,7 +179,10 @@ window.onload = function () {
     .forEach((radioButton) => {
       console.log("octave changed");
       radioButton.addEventListener("change", (event) => {
-        updateFrequency(event, synth.oscillators[0], "octavechoice1", null);
+        let octaveSelected = document.querySelector(
+          "input[name='octavechoice1']:checked"
+        ).value;
+        updateFrequency(event, synth.oscillators[0], octaveSelected, 0);
       });
     });
 
@@ -185,7 +191,10 @@ window.onload = function () {
     .forEach((radioButton) => {
       console.log("octave changed");
       radioButton.addEventListener("change", (event) => {
-        updateFrequency(event, synth.oscillators[1], "octavechoice2", null);
+        let octaveSelected = document.querySelector(
+          "input[name='octavechoice2']:checked"
+        ).value;
+        updateFrequency(event, synth.oscillators[1], octaveSelected, 0);
       });
     });
 
@@ -194,7 +203,10 @@ window.onload = function () {
     .forEach((radioButton) => {
       console.log("octave changed");
       radioButton.addEventListener("change", (event) => {
-        updateFrequency(event, synth.oscillators[2], "octavechoice3", null);
+        let octaveSelected = document.querySelector(
+          "input[name='octavechoice3']:checked"
+        ).value;
+        updateFrequency(event, synth.oscillators[2], octaveSelected, 0);
       });
     });
 
@@ -203,6 +215,8 @@ window.onload = function () {
   const detunevoice1Display = document.getElementById("detunevoice1display");
   detuneSliderVoice1.addEventListener("input", (event) => {
     let osc = synth.oscillators[0];
-    updateFrequency(event, osc, null, parseFloat(detuneSliderVoice1.value));
+    let detune = parseFloat(detuneSliderVoice1.value);
+    console.log(detune);
+    updateFrequency(event, osc, null, detune);
   });
 };
