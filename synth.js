@@ -24,9 +24,9 @@ class Synth {
     this.audioContext = new AudioContext();
     this.gain = this.audioContext.createGain();
     this.oscillators = [
-      this.createOscillator("sawtooth", 261.63, 0),
-      this.createOscillator("sawtooth", 261.63, 0),
-      this.createOscillator("sawtooth", 261.63, 0),
+      this.createOscillator("sine", 261.63, 0),
+      this.createOscillator("sine", 261.63, 0),
+      this.createOscillator("sine", 261.63, 0),
     ];
     this.gain.connect(this.audioContext.destination);
   }
@@ -171,7 +171,7 @@ window.onload = function () {
       if (osc1.isPlaying) {
         synth.stopOsc(osc1);
         event.target.textContent = "On";
-        event.target.style.backgroundColor = "greenyellow";
+        event.target.style.backgroundColor = "#2f855a";
       } else {
         synth.startOsc(osc1);
         event.target.textContent = "Off";
@@ -188,7 +188,7 @@ window.onload = function () {
       if (osc2.isPlaying) {
         synth.stopOsc(osc2);
         event.target.textContent = "On";
-        event.target.style.backgroundColor = "greenyellow";
+        event.target.style.backgroundColor = "#2f855a";
       } else {
         synth.startOsc(osc2);
         event.target.textContent = "Off";
@@ -205,7 +205,7 @@ window.onload = function () {
       if (osc3.isPlaying) {
         synth.stopOsc(osc3);
         event.target.textContent = "On";
-        event.target.style.backgroundColor = "greenyellow";
+        event.target.style.backgroundColor = "#2f855a";
       } else {
         synth.startOsc(osc3);
         event.target.textContent = "Off";
@@ -224,6 +224,34 @@ window.onload = function () {
         let osc = synth.oscillators[i];
         updateFrequency(event, synth, osc, i, noteSelected, null, null);
       }
+    });
+  });
+
+  // handle waveform selection
+  document.querySelectorAll("input[name='wavechoice1']").forEach((rb) => {
+    rb.addEventListener("change", (event) => {
+      let selectedWaveform = document.querySelector(
+        "input[name='wavechoice1']:checked"
+      ).value;
+      synth.oscillators[0].osc.type = selectedWaveform;
+    });
+  });
+
+  document.querySelectorAll("input[name='wavechoice2']").forEach((rb) => {
+    rb.addEventListener("change", (event) => {
+      let selectedWaveform = document.querySelector(
+        "input[name='wavechoice2']:checked"
+      ).value;
+      synth.oscillators[1].osc.type = selectedWaveform;
+    });
+  });
+
+  document.querySelectorAll("input[name='wavechoice3']").forEach((rb) => {
+    rb.addEventListener("change", (event) => {
+      let selectedWaveform = document.querySelector(
+        "input[name='wavechoice3']:checked"
+      ).value;
+      synth.oscillators[2].osc.type = selectedWaveform;
     });
   });
 
