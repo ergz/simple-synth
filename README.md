@@ -9,9 +9,11 @@ that Fabilter's Synth One has:
 ## Basic Features
 
 - [x] Waveform
-- [ ] Octave Selector
+- [x] Octave Selector
 - [ ] Noise 
-- [ ] Keyboard
+- [x] Keyboard* 
+
+*needs a little more work
 
 # Effects 
 
