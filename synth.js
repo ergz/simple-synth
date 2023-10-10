@@ -30,8 +30,17 @@ function composeChord(chord) {
     case "E": {
       return ["E", "G", "B"];
     }
-    case "B": {
+    case "F": {
+      return ["F", "A", "C"];
+    }
+    case "G": {
+      return ["G", "B", "D"];
+    }
+    case "A": {
       return ["A", "C", "E"];
+    }
+    case "B": {
+      return ["B", "D", "F"];
     }
     default: {
       return ["C", "D", "E"];
@@ -243,20 +252,6 @@ window.onload = function () {
       }
     });
 
-  // handle note changes
-  document.querySelectorAll("input[name='notechoice']").forEach((rb) => {
-    rb.addEventListener("change", (event) => {
-      let noteSelected = document.querySelector(
-        "input[name='notechoice']:checked"
-      ).value;
-
-      for (let i = 0; i < synth.oscillators.length; i++) {
-        let osc = synth.oscillators[i];
-        updateFrequency(event, synth, osc, i, noteSelected, null, null);
-      }
-    });
-  });
-
   // handle waveform selection
   document.querySelectorAll("input[name='wavechoice1']").forEach((rb) => {
     rb.addEventListener("change", (event) => {
@@ -299,15 +294,15 @@ window.onload = function () {
     updateFrequency(event, synth, osc, 0, null, null, detune);
   });
 
-  const filterSliderVoice1 = document.getElementById("filtervoice1");
-  const filtervoice1Display = document.getElementById("filtervoice1display");
-  filterSliderVoice1.addEventListener("input", (event) => {
-    const osc = synth.oscillators[0];
-    let selectedFreq = parseFloat(filterSliderVoice1.value);
-    const lpf = synth.createFilter("lowpass", 500, 1);
-    osc.osc.connect(lpf);
-    lpf.connect(synth.gain);
-  });
+  // const filterSliderVoice1 = document.getElementById("filtervoice1");
+  // const filtervoice1Display = document.getElementById("filtervoice1display");
+  // filterSliderVoice1.addEventListener("input", (event) => {
+  //   const osc = synth.oscillators[0];
+  //   let selectedFreq = parseFloat(filterSliderVoice1.value);
+  //   const lpf = synth.createFilter("lowpass", 500, 1);
+  //   osc.osc.connect(lpf);
+  //   lpf.connect(synth.gain);
+  // });
 
   // handle chord changes
   document.querySelectorAll("input[name='chordchoice']").forEach((rb) => {
