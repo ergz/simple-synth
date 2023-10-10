@@ -1,3 +1,7 @@
+let canvas;
+let analyserNode;
+let signalData;
+
 function noteToHz(note) {
   switch (note) {
     case "C":
@@ -119,6 +123,8 @@ class Synth {
   }
 }
 
+let synth = new Synth();
+
 function updateFrequency(
   event,
   synth,
@@ -197,8 +203,8 @@ function setupOctaveControls(voiceIndex, synth) {
     });
 }
 
+// onload ------------------------------------------------------------------
 window.onload = function () {
-  let synth = new Synth();
   // start button
 
   document
@@ -329,3 +335,67 @@ window.onload = function () {
     });
   });
 };
+
+function setup() {
+  let wave1Canvas = document.getElementById("waveform1viz");
+  if (synth) {
+    analyserNode = synth.audioContext.createAnalyser();
+    analyserNode.smoothingTimeConstant = 1;
+    signalData = new Float32Array(analyserNode.fftSize);
+    synth.oscillators[0].osc.connect(analyserNode);
+    canvas1 = createCanvas(
+      wave1Canvas.clientWidth,
+      wave1Canvas.clientHeight,
+      wave1Canvas
+    );
+  }
+}
+
+function draw() {
+  background("black");
+  const dim = min(height, width);
+  if (synth) {
+    if (synth.audioContext) {
+      if (analyserNode) {
+        analyserNode.getFloatTimeDomainData(signalData);
+
+        const signal = rmss(signalData);
+        const scale = 0.015;
+        const size = dim * scale * signal;
+
+        const redOffset = map(signal, 0, 0.5, -50, 200);
+        const blueOffset = map(signal, 0, 0.5, 255, -30);
+        const fillAlpha = map(signal, 0, 0.5, 0, 200);
+
+        stroke(Math.min(50 + redOffset, 256), 10, 0 + blueOffset);
+        fill(Math.min(50 + redOffset, 256), 10, 0 + blueOffset, fillAlpha);
+        // noFill();
+        strokeWeight(10);
+        // circle(width / 2, height / 2, size);
+
+        let numPoints = 100;
+        let radius = 100;
+        let glitchMagnitude = 150;
+        beginShape(POINTS);
+        for (let i = 0; i <= numPoints; i++) {
+          let angle = (TWO_PI / numPoints) * i;
+          let r = radius + (size / 2) * glitchMagnitude + Math.random() * 10;
+          let x = width / 2 + r * cos(angle);
+          let y = height / 2 + r * sin(angle);
+
+          vertex(x, y);
+        }
+        endShape();
+      }
+    }
+  }
+}
+
+function rmss(data) {
+  let rms = 0;
+  for (let i = 0; i < data.length; i++) {
+    rms += data[i] * data[i];
+  }
+  rms = Math.sqrt(rms / data.length);
+  return rms;
+}
