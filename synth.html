@@ -40,6 +40,12 @@
                 <input id="detunevoice1" type="range" min="-5" max="5" value="0" step=".1" class="slider bg-gray-300  h-2 rounded-full outline-none"/>
                 <span id="detunevoice1display" class="text-sm text-gray-700 ml-2">0</span>
             </div>
+
+            <div style="padding: 5px">
+                <label for="filtervoice1" class="block text-sm font-medium text-gray-700 mb-1">filter voice</label>    
+                <input id="filtervoice1" type="range" min="700" max="1500" value="1000" step="1" class="slider bg-gray-300  h-2 rounded-full outline-none"/>
+                <span id="filtervoice1display" class="text-sm text-gray-700 ml-2">0</span>
+            </div>
             
             <button id="activateVoice1" class="bg-green-700 hover:bg-green-600 text-white font-bold text-sm py-1 px-2 rounded">On</button>
         </div>
@@ -127,34 +133,33 @@
             </fieldset>
         </form>
     </div>
-    <div class="p-4">
-        <div class="flex">
-            <!-- White Keys -->
-            <button class="bg-white h-24 w-12 border border-gray-400 relative">
-                <span class="absolute top-2 left-1/2 transform -translate-x-1/2">C</span>
-            </button>
-            <button class="bg-white h-24 w-12 border border-gray-400 relative">
-                <span class="absolute top-2 left-1/2 transform -translate-x-1/2">D</span>
-            </button>
-            <button class="bg-white h-24 w-12 border border-gray-400 relative">
-                <span class="absolute top-2 left-1/2 transform -translate-x-1/2">E</span>
-            </button>
-            <button class="bg-white h-24 w-12 border border-gray-400 relative">
-                <span class="absolute top-2 left-1/2 transform -translate-x-1/2">F</span>
-            </button>
-            <button class="bg-white h-24 w-12 border border-gray-400 relative">
-                <span class="absolute top-2 left-1/2 transform -translate-x-1/2">G</span>
-            </button>
-            <button class="bg-white h-24 w-12 border border-gray-400 relative">
-                <span class="absolute top-2 left-1/2 transform -translate-x-1/2">A</span>
-            </button>
-            <button class="bg-white h-24 w-12 border border-gray-400 relative">
-                <span class="absolute top-2 left-1/2 transform -translate-x-1/2">B</span>
-            </button>
-            <button class="bg-white h-24 w-12 border border-gray-400 relative">
-                <span class="absolute top-2 left-1/2 transform -translate-x-1/2">C</span>
-            </button>
-        </div>
+    <div>
+        <form style="padding: 15px">
+            <fieldset>
+                <legend>Chords</legend>  
+                <input type="radio" id="chordC"  name="chordchoice" value="C" checked>
+                <label for="chordC">C</label>
+                
+                <input type="radio" id="chordD" name="chordchoice" value="D">
+                <label for="chordD">D</label>
+                
+                <input type="radio" id="chordE" name="chordchoice" value="E">
+                <label for="chordE">E</label>
+                
+                <input type="radio" id="chordF" name="chordchoice" value="F">
+                <label for="chordF">F</label>
+                
+                <input type="radio" id="chordG" name="chordchoice" value="G">
+                <label for="chordG">G</label>
+                
+                <input type="radio" id="chordA" name="chordchoice" value="A">
+                <label for="chordA">A</label>
+                
+                <input type="radio" id="chordB" name="chordchoice" value="B">
+                <label for="chordB">B</label>
+                
+            </fieldset>
+        </form>
     </div>
     
     

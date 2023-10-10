@@ -19,6 +19,26 @@ function noteToHz(note) {
   }
 }
 
+function composeChord(chord) {
+  switch (chord) {
+    case "C": {
+      return ["C", "G", "E"];
+    }
+    case "D": {
+      return ["D", "F", "A"];
+    }
+    case "E": {
+      return ["E", "G", "B"];
+    }
+    case "B": {
+      return ["A", "C", "E"];
+    }
+    default: {
+      return ["C", "D", "E"];
+    }
+  }
+}
+
 class Synth {
   constructor() {
     this.audioContext = new AudioContext();
@@ -80,6 +100,14 @@ class Synth {
       this.stopOsc(osc);
     }
   }
+
+  createFilter(type, freq, Q) {
+    const filter = this.audioContext.createBiquadFilter();
+    filter.type = type;
+    filter.frequency.setValueAtTime(freq, this.audioContext.currentTime);
+    filter.Q.setValueAtTime(Q, this.audioContext.currentTime);
+    return filter;
+  }
 }
 
 function updateFrequency(
@@ -114,6 +142,8 @@ function updateFrequency(
     let octaveDisplay = document.getElementById(
       "octavedisplay" + (voiceIndex + 1)
     );
+    console.log(octaveDisplay);
+    console.log("octavedisplay" + (voiceIndex + 1));
     octaveDisplay.value = 0;
     console.log(noteInHz);
     console.log("current octave for voice: " + oscContainer.currentOctave);
@@ -267,5 +297,40 @@ window.onload = function () {
     let detune = parseFloat(detuneSliderVoice1.value);
     console.log(detune);
     updateFrequency(event, synth, osc, 0, null, null, detune);
+  });
+
+  const filterSliderVoice1 = document.getElementById("filtervoice1");
+  const filtervoice1Display = document.getElementById("filtervoice1display");
+  filterSliderVoice1.addEventListener("input", (event) => {
+    const osc = synth.oscillators[0];
+    let selectedFreq = parseFloat(filterSliderVoice1.value);
+    const lpf = synth.createFilter("lowpass", 500, 1);
+    osc.osc.connect(lpf);
+    lpf.connect(synth.gain);
+  });
+
+  // handle chord changes
+  document.querySelectorAll("input[name='chordchoice']").forEach((rb) => {
+    rb.addEventListener("change", (event) => {
+      let selectedChord = document.querySelector(
+        "input[name='chordchoice']:checked"
+      ).value;
+      let notesForChord = composeChord(selectedChord);
+      console.log(notesForChord);
+      for (let i = 0; i < synth.oscillators.length; i++) {
+        if (synth.oscillators[i].isPlaying) {
+          console.log("playing note: " + notesForChord[i] + " on voice: " + i);
+          updateFrequency(
+            event,
+            synth,
+            synth.oscillators[i],
+            i,
+            notesForChord[i],
+            null,
+            null
+          );
+        }
+      }
+    });
   });
 };
