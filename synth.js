@@ -334,68 +334,61 @@ window.onload = function () {
       }
     });
   });
-};
 
-function setup() {
-  let wave1Canvas = document.getElementById("waveform1viz");
-  if (synth) {
-    analyserNode = synth.audioContext.createAnalyser();
-    analyserNode.smoothingTimeConstant = 1;
-    signalData = new Float32Array(analyserNode.fftSize);
-    synth.oscillators[0].osc.connect(analyserNode);
-    canvas1 = createCanvas(
-      wave1Canvas.clientWidth,
-      wave1Canvas.clientHeight,
-      wave1Canvas
-    );
-  }
-}
+  // do the viz
+  const vizCanvas = document.getElementById("wave1canvas");
+  const ctx = vizCanvas.getContext("2d");
+  const analyser = synth.audioContext.createAnalyser();
+  analyser.fftSize = 2048;
+  let osc = synth.oscillators[0].osc;
+  osc.connect(analyser);
+  const bufferLength = analyser.fftSize;
+  const dataArray = new Uint8Array(bufferLength);
 
-function draw() {
-  background("black");
-  const dim = min(height, width);
-  if (synth) {
-    if (synth.audioContext) {
-      if (analyserNode) {
-        analyserNode.getFloatTimeDomainData(signalData);
+  function draw() {
+    // Get the waveform data
+    analyser.getByteTimeDomainData(dataArray);
 
-        const signal = rmss(signalData);
-        const scale = 0.015;
-        const size = dim * scale * signal;
+    // Clear the canvas
+    ctx.clearRect(0, 0, vizCanvas.width, vizCanvas.height);
 
-        const redOffset = map(signal, 0, 0.5, -50, 200);
-        const blueOffset = map(signal, 0, 0.5, 255, -30);
-        const fillAlpha = map(signal, 0, 0.5, 0, 200);
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, vizCanvas.width, vizCanvas.height);
+    // Set up the drawing parameters
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "rgb(0, 200, 100)";
 
-        stroke(Math.min(50 + redOffset, 256), 10, 0 + blueOffset);
-        fill(Math.min(50 + redOffset, 256), 10, 0 + blueOffset, fillAlpha);
-        // noFill();
-        strokeWeight(10);
-        // circle(width / 2, height / 2, size);
+    // Set up the glowing effect
+    ctx.shadowBlur = 12; // Adjust the level of glow by changing this value
+    ctx.shadowColor = "rgb(0, 200, 100)"; // Make sure the shadow color matches the stroke color
+    // Optionally, you can offset the shadow if desired
+    ctx.shadowOffsetX = 2;
+    ctx.shadowOffsetY = 5;
 
-        let numPoints = 100;
-        let radius = 100;
-        let glitchMagnitude = 150;
-        beginShape(POINTS);
-        for (let i = 0; i <= numPoints; i++) {
-          let angle = (TWO_PI / numPoints) * i;
-          let r = radius + (size / 2) * glitchMagnitude + Math.random() * 10;
-          let x = width / 2 + r * cos(angle);
-          let y = height / 2 + r * sin(angle);
+    // Begin the path
+    ctx.beginPath();
 
-          vertex(x, y);
-        }
-        endShape();
+    const sliceWidth = (vizCanvas.width * 1.0) / bufferLength;
+    let x = 0;
+
+    for (let i = 0; i < bufferLength; i++) {
+      const v = dataArray[i] / 128.0;
+      const y = (v * vizCanvas.height) / 2;
+
+      if (i === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
       }
-    }
-  }
-}
 
-function rmss(data) {
-  let rms = 0;
-  for (let i = 0; i < data.length; i++) {
-    rms += data[i] * data[i];
+      x += sliceWidth;
+    }
+
+    ctx.lineTo(vizCanvas.width, vizCanvas.height / 2);
+    ctx.stroke();
+
+    requestAnimationFrame(draw);
   }
-  rms = Math.sqrt(rms / data.length);
-  return rms;
-}
+
+  draw();
+};
