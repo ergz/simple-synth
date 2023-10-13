@@ -6,16 +6,31 @@ function noteToHz(note) {
   switch (note) {
     case "C":
       return 261.63;
+    case "C#":
+    case "Db":
+      return 277.18;
     case "D":
       return 293.66;
+    case "D#":
+    case "Eb":
+      return 311.13;
     case "E":
       return 329.63;
     case "F":
       return 349.23;
+    case "F#":
+    case "Gb":
+      return 369.99;
     case "G":
-      return 392;
+      return 392.0;
+    case "G#":
+    case "Ab":
+      return 415.3;
     case "A":
-      return 440;
+      return 440.0;
+    case "A#":
+    case "Bb":
+      return 466.16;
     case "B":
       return 493.88;
     default:
@@ -25,30 +40,64 @@ function noteToHz(note) {
 
 function composeChord(chord) {
   switch (chord) {
-    case "C": {
-      return ["C", "G", "E"];
-    }
-    case "D": {
-      return ["D", "F", "A"];
-    }
-    case "E": {
-      return ["E", "G", "B"];
-    }
-    case "F": {
-      return ["F", "A", "C"];
-    }
-    case "G": {
-      return ["G", "B", "D"];
-    }
-    case "A": {
-      return ["A", "C", "E"];
-    }
-    case "B": {
-      return ["B", "D", "F"];
-    }
-    default: {
-      return ["C", "D", "E"];
-    }
+    case "C":
+      return ["C", "E", "G"]; // C Major
+    case "Cm":
+      return ["C", "D#", "G"]; // C Minor
+    case "Cdim":
+      return ["C", "D#", "F#"]; // C Diminished
+    case "Caug":
+      return ["C", "E", "G#"]; // C Augmented
+    case "D":
+      return ["D", "F#", "A"]; // D Major
+    case "Dm":
+      return ["D", "F", "A"]; // D Minor
+    case "Ddim":
+      return ["D", "F", "G#"]; // D Diminished
+    case "Daug":
+      return ["D", "F#", "A#"]; // D Augmented
+    case "E":
+      return ["E", "G#", "B"]; // E Major
+    case "Em":
+      return ["E", "G", "B"]; // E Minor
+    case "Edim":
+      return ["E", "G", "A#"]; // E Diminished
+    case "Eaug":
+      return ["E", "G#", "C"]; // E Augmented
+    case "F":
+      return ["F", "A", "C"]; // F Major
+    case "Fm":
+      return ["F", "G#", "C"]; // F Minor
+    case "Fdim":
+      return ["F", "G#", "A#"]; // F Diminished
+    case "Faug":
+      return ["F", "A", "C#"]; // F Augmented
+    case "G":
+      return ["G", "B", "D"]; // G Major
+    case "Gm":
+      return ["G", "A#", "D"]; // G Minor
+    case "Gdim":
+      return ["G", "A#", "C#"]; // G Diminished
+    case "Gaug":
+      return ["G", "B", "D#"]; // G Augmented
+    case "A":
+      return ["A", "C#", "E"]; // A Major
+    case "Am":
+      return ["A", "C", "E"]; // A Minor
+    case "Adim":
+      return ["A", "C", "D#"]; // A Diminished
+    case "Aaug":
+      return ["A", "C#", "F"]; // A Augmented
+    case "B":
+      return ["B", "D#", "F#"]; // B Major
+    case "Bm":
+      return ["B", "D", "F#"]; // B Minor
+    case "Bdim":
+      return ["B", "D", "F"]; // B Diminished
+    case "Baug":
+      return ["B", "D#", "G"]; // B Augmented
+    default:
+      return ["C", "E", "G"]; // Default to C Major
   }
 }
 
@@ -66,11 +115,14 @@ class Synth {
 
   createOscillator(type = "sine", freq = 440, startOctave) {
     const osc = this.audioContext.createOscillator();
+    const gainNode = this.audioContext.createGain();
+    gainNode.connect(this.gain);
     osc.type = type;
     osc.frequency.setValueAtTime(freq, this.audioContext.currentTime);
     // connect it to the gain node
     this.gain.gain.setTargetAtTime(0.1, this.audioContext.currentTime, 0);
     osc.connect(this.gain);
+    osc.connect(gainNode);
 
     // wrap around the container and add to array
     const oscContainer = {
@@ -78,6 +130,7 @@ class Synth {
       isPlaying: false,
       baseFreq: freq,
       currentOctave: startOctave,
+      gainNode,
     };
     return oscContainer;
   }
@@ -207,82 +260,34 @@ function setupOctaveControls(voiceIndex, synth) {
 window.onload = function () {
   // start button
 
-  document
-    .getElementById("activateVoice1")
-    .addEventListener("click", (event) => {
-      console.log("voice 1 start clicked");
+  const voiceIds = ["activateVoice1", "activateVoice2", "activateVoice3"];
+  voiceIds.forEach((id, index) => {
+    document.getElementById(`${id}`).addEventListener("click", (event) => {
+      console.log(`voice: ${id} start clicked`);
       synth.audioContext.resume();
-      let osc1 = synth.oscillators[0];
-      if (osc1.isPlaying) {
-        synth.stopOsc(osc1);
+      let osc = synth.oscillators[index];
+      if (osc.isPlaying) {
+        synth.stopOsc(osc);
         event.target.textContent = "On";
         event.target.style.backgroundColor = "#2f855a";
       } else {
-        synth.startOsc(osc1);
+        synth.startOsc(osc);
         event.target.textContent = "Off";
         event.target.style.backgroundColor = "red";
       }
     });
-
-  document
-    .getElementById("activateVoice2")
-    .addEventListener("click", (event) => {
-      console.log("voice 2 start clicked");
-      synth.audioContext.resume();
-      let osc2 = synth.oscillators[1];
-      if (osc2.isPlaying) {
-        synth.stopOsc(osc2);
-        event.target.textContent = "On";
-        event.target.style.backgroundColor = "#2f855a";
-      } else {
-        synth.startOsc(osc2);
-        event.target.textContent = "Off";
-        event.target.style.backgroundColor = "red";
-      }
-    });
-
-  document
-    .getElementById("activateVoice3")
-    .addEventListener("click", (event) => {
-      console.log("voice 3 start clicked");
-      synth.audioContext.resume();
-      let osc3 = synth.oscillators[2];
-      if (osc3.isPlaying) {
-        synth.stopOsc(osc3);
-        event.target.textContent = "On";
-        event.target.style.backgroundColor = "#2f855a";
-      } else {
-        synth.startOsc(osc3);
-        event.target.textContent = "Off";
-        event.target.style.backgroundColor = "red";
-      }
-    });
+  });
 
   // handle waveform selection
-  document.querySelectorAll("input[name='wavechoice1']").forEach((rb) => {
-    rb.addEventListener("change", (event) => {
-      let selectedWaveform = document.querySelector(
-        "input[name='wavechoice1']:checked"
-      ).value;
-      synth.oscillators[0].osc.type = selectedWaveform;
-    });
-  });
-
-  document.querySelectorAll("input[name='wavechoice2']").forEach((rb) => {
-    rb.addEventListener("change", (event) => {
-      let selectedWaveform = document.querySelector(
-        "input[name='wavechoice2']:checked"
-      ).value;
-      synth.oscillators[1].osc.type = selectedWaveform;
-    });
-  });
-
-  document.querySelectorAll("input[name='wavechoice3']").forEach((rb) => {
-    rb.addEventListener("change", (event) => {
-      let selectedWaveform = document.querySelector(
-        "input[name='wavechoice3']:checked"
-      ).value;
-      synth.oscillators[2].osc.type = selectedWaveform;
+  const waveChoices = ["wavechoice1", "wavechoice2", "wavechoice3"];
+  waveChoices.forEach((id, index) => {
+    document.querySelectorAll(`input[name='${id}']`).forEach((rb) => {
+      rb.addEventListener("change", (event) => {
+        let selectedWaveform = document.querySelector(
+          `input[name='${id}']:checked`
+        ).value;
+        synth.oscillators[index].osc.type = selectedWaveform;
+      });
     });
   });
 
@@ -300,19 +305,28 @@ window.onload = function () {
       let osc = synth.oscillators[index];
       let detune = parseFloat(detuneSlider.value);
       console.log(detune);
+      detuneDisplay.textContent = detune;
       updateFrequency(event, synth, osc, index, null, null, detune);
     });
   });
 
-  // const filterSliderVoice1 = document.getElementById("filtervoice1");
-  // const filtervoice1Display = document.getElementById("filtervoice1display");
-  // filterSliderVoice1.addEventListener("input", (event) => {
-  //   const osc = synth.oscillators[0];
-  //   let selectedFreq = parseFloat(filterSliderVoice1.value);
-  //   const lpf = synth.createFilter("lowpass", 500, 1);
-  //   osc.osc.connect(lpf);
-  //   lpf.connect(synth.gain);
-  // });
+  const volumeIds = ["volumevoice1", "volumevoice2", "volumevoice3"];
+
+  volumeIds.forEach((id, index) => {
+    let oscillator = synth.oscillators[index];
+
+    const volSlider = document.getElementById(`${id}`);
+    const volDisplay = document.getElementById(`${id}` + "display");
+    volSlider.addEventListener("input", (event) => {
+      console.log(oscillator);
+      let vol = parseFloat(volSlider.value);
+      console.log(vol);
+      oscillator.gainNode.gain.setValueAtTime(
+        vol,
+        synth.audioContext.currentTime
+      );
+    });
+  });
 
   // handle chord changes
   document.querySelectorAll("input[name='chordchoice']").forEach((rb) => {
