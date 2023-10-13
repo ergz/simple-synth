@@ -354,28 +354,18 @@ window.onload = function () {
 
   function draw() {
     vizObjects.forEach((viz) => {
-      // Get the waveform data
       viz.analyser.getByteTimeDomainData(viz.dataArray);
-
-      // Clear the canvas
       viz.ctx.clearRect(0, 0, viz.canvas.width, viz.canvas.height);
-
-      // Set the background color
       viz.ctx.fillStyle = "black";
       viz.ctx.fillRect(0, 0, viz.canvas.width, viz.canvas.height);
-
-      // Set up the drawing parameters
       viz.ctx.lineWidth = 2;
       viz.ctx.strokeStyle = "rgb(0, 200, 100)";
 
-      // Set up the glowing effect
       viz.ctx.shadowBlur = 12; // Adjust the level of glow by changing this value
       viz.ctx.shadowColor = "rgb(0, 200, 100)"; // Make sure the shadow color matches the stroke color
-      // Optionally, you can offset the shadow if desired
       viz.ctx.shadowOffsetX = 2;
       viz.ctx.shadowOffsetY = 5;
 
-      // Begin the path
       viz.ctx.beginPath();
 
       const sliceWidth = (viz.canvas.width * 1.0) / viz.bufferLength;
