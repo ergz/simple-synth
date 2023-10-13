@@ -336,56 +336,67 @@ window.onload = function () {
   });
 
   // do the viz
-  const vizCanvas = document.getElementById("wave1canvas");
-  const ctx = vizCanvas.getContext("2d");
-  const analyser = synth.audioContext.createAnalyser();
-  analyser.fftSize = 2048;
-  let osc = synth.oscillators[0].osc;
-  osc.connect(analyser);
-  const bufferLength = analyser.fftSize;
-  const dataArray = new Uint8Array(bufferLength);
+  const canvasIds = ["wave1canvas", "wave2canvas", "wave3canvas"];
+
+  const vizObjects = canvasIds.map((id, index) => {
+    const canvas = document.getElementById(id);
+    const ctx = canvas.getContext("2d");
+
+    const analyser = synth.audioContext.createAnalyser();
+    analyser.fftSize = 2048;
+
+    synth.oscillators[index].osc.connect(analyser);
+    const bufferLength = analyser.fftSize;
+    const dataArray = new Uint8Array(bufferLength);
+
+    return { canvas, ctx, analyser, index, bufferLength, dataArray };
+  });
 
   function draw() {
-    // Get the waveform data
-    analyser.getByteTimeDomainData(dataArray);
+    vizObjects.forEach((viz) => {
+      // Get the waveform data
+      viz.analyser.getByteTimeDomainData(viz.dataArray);
 
-    // Clear the canvas
-    ctx.clearRect(0, 0, vizCanvas.width, vizCanvas.height);
+      // Clear the canvas
+      viz.ctx.clearRect(0, 0, viz.canvas.width, viz.canvas.height);
 
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, vizCanvas.width, vizCanvas.height);
-    // Set up the drawing parameters
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = "rgb(0, 200, 100)";
+      // Set the background color
+      viz.ctx.fillStyle = "black";
+      viz.ctx.fillRect(0, 0, viz.canvas.width, viz.canvas.height);
 
-    // Set up the glowing effect
-    ctx.shadowBlur = 12; // Adjust the level of glow by changing this value
-    ctx.shadowColor = "rgb(0, 200, 100)"; // Make sure the shadow color matches the stroke color
-    // Optionally, you can offset the shadow if desired
-    ctx.shadowOffsetX = 2;
-    ctx.shadowOffsetY = 5;
+      // Set up the drawing parameters
+      viz.ctx.lineWidth = 2;
+      viz.ctx.strokeStyle = "rgb(0, 200, 100)";
 
-    // Begin the path
-    ctx.beginPath();
+      // Set up the glowing effect
+      viz.ctx.shadowBlur = 12; // Adjust the level of glow by changing this value
+      viz.ctx.shadowColor = "rgb(0, 200, 100)"; // Make sure the shadow color matches the stroke color
+      // Optionally, you can offset the shadow if desired
+      viz.ctx.shadowOffsetX = 2;
+      viz.ctx.shadowOffsetY = 5;
 
-    const sliceWidth = (vizCanvas.width * 1.0) / bufferLength;
-    let x = 0;
+      // Begin the path
+      viz.ctx.beginPath();
 
-    for (let i = 0; i < bufferLength; i++) {
-      const v = dataArray[i] / 128.0;
-      const y = (v * vizCanvas.height) / 2;
+      const sliceWidth = (viz.canvas.width * 1.0) / viz.bufferLength;
+      let x = 0;
 
-      if (i === 0) {
-        ctx.moveTo(x, y);
-      } else {
-        ctx.lineTo(x, y);
+      for (let i = 0; i < viz.bufferLength; i++) {
+        const v = viz.dataArray[i] / 128.0;
+        const y = (v * viz.canvas.height) / 2;
+
+        if (i === 0) {
+          viz.ctx.moveTo(x, y);
+        } else {
+          viz.ctx.lineTo(x, y);
+        }
+
+        x += sliceWidth;
       }
 
-      x += sliceWidth;
-    }
-
-    ctx.lineTo(vizCanvas.width, vizCanvas.height / 2);
-    ctx.stroke();
+      viz.ctx.lineTo(viz.canvas.width, viz.canvas.height / 2);
+      viz.ctx.stroke();
+    });
 
     requestAnimationFrame(draw);
   }
