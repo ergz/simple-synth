@@ -40,11 +40,11 @@
                 <span id="detunevoice1display" class="text-sm text-gray-700 ml-2">0</span>
             </div>
 
-            <div style="padding: 5px">
+            <!-- <div style="padding: 5px">
                 <label for="filtervoice1" class="block text-sm font-medium text-gray-700 mb-1">filter voice</label>    
                 <input id="filtervoice1" type="range" min="700" max="1500" value="1000" step="1" class="slider bg-gray-300  h-2 rounded-full outline-none"/>
                 <span id="filtervoice1display" class="text-sm text-gray-700 ml-2">0</span>
-            </div>
+            </div> -->
 
             <div class="flex-container flex-grow border-2 border-gray-800 rounded-md p-4 m-4">
                 <div id = "wave1viz" class="canvas-container">
@@ -78,6 +78,13 @@
                 </fieldset>
             </div>
             
+            <div style="padding: 5px">
+                <label for="detunevoice2" class="block text-sm font-medium text-gray-700 mb-1">detune voice</label>    
+                <input id="detunevoice2" type="range" min="-5" max="5" value="0" step=".1" class="slider bg-gray-300  h-2 rounded-full outline-none"/>
+                <span id="detunevoice2display" class="text-sm text-gray-700 ml-2">0</span>
+            </div>
+
+
             <div class="flex-container flex-grow border-2 border-gray-800 rounded-md p-4 m-4">
                 <div id = "wave2viz" class="canvas-container">
                     <canvas id ="wave2canvas"></canvas>
@@ -109,6 +116,13 @@
                     <button id="octaveup3" class="bg-gray-400 hover:bg-gray-500 text-gray-800 font-bold py-1 px-4">+</button>
                 </fieldset>
             </div>
+
+            <div style="padding: 5px">
+                <label for="detunevoice3" class="block text-sm font-medium text-gray-700 mb-1">detune voice</label>    
+                <input id="detunevoice3" type="range" min="-5" max="5" value="0" step=".1" class="slider bg-gray-300  h-2 rounded-full outline-none"/>
+                <span id="detunevoice3display" class="text-sm text-gray-700 ml-2">0</span>
+            </div>
+
             
             <div class="flex-container flex-grow border-2 border-gray-800 rounded-md p-4 m-4">
                 <div id = "wave3viz" class="canvas-container">

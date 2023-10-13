@@ -291,13 +291,17 @@ window.onload = function () {
     setupOctaveControls(i, synth); // Call setupOctaveControls for each voice
   }
   // detune
-  const detuneSliderVoice1 = document.getElementById("detunevoice1");
-  const detunevoice1Display = document.getElementById("detunevoice1display");
-  detuneSliderVoice1.addEventListener("input", (event) => {
-    let osc = synth.oscillators[0];
-    let detune = parseFloat(detuneSliderVoice1.value);
-    console.log(detune);
-    updateFrequency(event, synth, osc, 0, null, null, detune);
+  ["1", "2", "3"].forEach((voiceNumber, index) => {
+    const detuneSlider = document.getElementById(`detunevoice${voiceNumber}`);
+    const detuneDisplay = document.getElementById(
+      `detunevoice${voiceNumber}display`
+    );
+    detuneSlider.addEventListener("input", (event) => {
+      let osc = synth.oscillators[index];
+      let detune = parseFloat(detuneSlider.value);
+      console.log(detune);
+      updateFrequency(event, synth, osc, index, null, null, detune);
+    });
   });
 
   // const filterSliderVoice1 = document.getElementById("filtervoice1");
