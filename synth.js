@@ -117,14 +117,25 @@ class Synth {
   createOscillator(type = "sine", freq = 440, startOctave) {
     const osc = this.audioContext.createOscillator();
     const gainNode = this.audioContext.createGain();
-    gainNode.connect(this.audioContext.destination);
+    const filterNode = this.audioContext.createBiquadFilter();
+
     osc.type = type;
     osc.frequency.setValueAtTime(freq, this.audioContext.currentTime);
+
+    filterNode.tupe = "lowpass";
+    filterNode.Q.setValueAtTime(100, this.audioContext.currentTime);
+    filterNode.frequency.setValueAtTime(5000, this.audioContext.currentTime);
+
+    // osc --> filter --> gain (voice) --> destination
+    //                \--> gain (master) --^
+    osc.connect(filterNode);
+    filterNode.connect(gainNode);
+    gainNode.connect(this.audioContext.destination);
+    filterNode.connect(this.gain);
+
     // connect it to the gain node
     this.gain.gain.setTargetAtTime(0.1, this.audioContext.currentTime, 0);
     gainNode.gain.setTargetAtTime(0.05, this.audioContext.currentTime, 0);
-    osc.connect(this.gain);
-    osc.connect(gainNode);
 
     // wrap around the container and add to array
     const oscContainer = {
@@ -133,6 +144,7 @@ class Synth {
       baseFreq: freq,
       currentOctave: startOctave,
       gainNode,
+      filterNode,
     };
     return oscContainer;
   }
@@ -169,12 +181,12 @@ class Synth {
     }
   }
 
-  createFilter(type, freq, Q) {
-    const filter = this.audioContext.createBiquadFilter();
-    filter.type = type;
-    filter.frequency.setValueAtTime(freq, this.audioContext.currentTime);
-    filter.Q.setValueAtTime(Q, this.audioContext.currentTime);
-    return filter;
+  updateFilter(osc, freq, Q) {
+    osc.filterNode.frequency.setValueAtTime(
+      freq,
+      this.audioContext.currentTime
+    );
+    osc.filterNode.Q.setValueAtTime(Q, this.audioContext.currentTime);
   }
 }
 
@@ -433,4 +445,25 @@ window.onload = function () {
   }
 
   draw();
+
+  const filterSlider = document.getElementById("filter");
+  const filterSliderDisplay = document.getElementById("filterdisplay");
+  filterSlider.addEventListener("input", (event) => {
+    filtervalue = parseFloat(filterSlider.value);
+    filterSliderDisplay.textContent = filtervalue;
+    let osc = synth.oscillators[0];
+    osc.filterNode.frequency.setValueAtTime(
+      filtervalue,
+      synth.audioContext.currentTime
+    );
+  });
+
+  const QSlider = document.getElementById("Q");
+  const QSliderDisplay = document.getElementById("Qdisplay");
+  QSlider.addEventListener("input", (event) => {
+    Qvalue = parseFloat(QSlider.value);
+    QSliderDisplay.textContent = Qvalue;
+    let osc = synth.oscillators[0];
+    osc.filterNode.Q.setValueAtTime(Qvalue, synth.audioContext.currentTime);
+  });
 };
