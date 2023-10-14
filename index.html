@@ -33,10 +33,10 @@
                     <button id="octaveup1" class="bg-gray-400 hover:bg-gray-500 text-gray-800 font-bold py-1 px-4">+</button>
                 </fieldset>
             </div>
-
+            
             <div style="padding: 5px">
                 <label for="volumevoice1" class="block text-sm font-medium text-gray-700 mb-1">volume voice</label>    
-                <input id="volumevoice1" type="range" min="0" max="1" value=".3" step=".05" class="slider bg-gray-300  h-2 rounded-full outline-none"/>
+                <input id="volumevoice1" type="range" min="0" max="1" value=".3" step=".01" class="slider bg-gray-300  h-2 rounded-full outline-none"/>
                 <span id="volumevoice1display" class="text-sm text-gray-700 ml-2">0</span>
             </div>
             
@@ -45,7 +45,7 @@
                 <input id="detunevoice1" type="range" min="-5" max="5" value="0" step=".1" class="slider bg-gray-300  h-2 rounded-full outline-none"/>
                 <span id="detunevoice1display" class="text-sm text-gray-700 ml-2">0</span>
             </div>
-
+            
             <div class="flex-container flex-grow border-2 border-gray-800 rounded-md p-4 m-4">
                 <div id = "wave1viz" class="canvas-container">
                     <canvas id ="wave1canvas"></canvas>
@@ -77,28 +77,28 @@
                     <button id="octaveup2" class="bg-gray-400 hover:bg-gray-500 text-gray-800 font-bold py-1 px-4">+</button>
                 </fieldset>
             </div>
-
+            
             <div style="padding: 5px">
                 <label for="volumevoice2" class="block text-sm font-medium text-gray-700 mb-1">volume voice</label>    
-                <input id="volumevoice2" type="range" min="0" max="1" value=".3" step=".05" class="slider bg-gray-300  h-2 rounded-full outline-none"/>
+                <input id="volumevoice2" type="range" min="0" max="1" value=".3" step=".01" class="slider bg-gray-300  h-2 rounded-full outline-none"/>
                 <span id="volumevoice2display" class="text-sm text-gray-700 ml-2">0</span>
             </div>
-
+            
             
             <div style="padding: 5px">
                 <label for="detunevoice2" class="block text-sm font-medium text-gray-700 mb-1">detune voice</label>    
                 <input id="detunevoice2" type="range" min="-5" max="5" value="0" step=".1" class="slider bg-gray-300  h-2 rounded-full outline-none"/>
                 <span id="detunevoice2display" class="text-sm text-gray-700 ml-2">0</span>
             </div>
-
-
+            
+            
             <div class="flex-container flex-grow border-2 border-gray-800 rounded-md p-4 m-4">
                 <div id = "wave2viz" class="canvas-container">
                     <canvas id ="wave2canvas"></canvas>
                 </div>
             </div>
-
-
+            
+            
             <button id="activateVoice2" class="bg-green-700 hover:bg-green-600 text-white font-bold text-sm py-1 px-2 rounded">On</button>
         </div>
         
@@ -123,44 +123,60 @@
                     <button id="octaveup3" class="bg-gray-400 hover:bg-gray-500 text-gray-800 font-bold py-1 px-4">+</button>
                 </fieldset>
             </div>
-
+            
             <div style="padding: 5px">
                 <label for="volumevoice3" class="block text-sm font-medium text-gray-700 mb-1">volume voice</label>    
-                <input id="volumevoice3" type="range" min="0" max="1" value=".3" step=".05" class="slider bg-gray-300  h-2 rounded-full outline-none"/>
+                <input id="volumevoice3" type="range" min="0" max="1" value=".3" step=".01" class="slider bg-gray-300  h-2 rounded-full outline-none"/>
                 <span id="volumevoice3display" class="text-sm text-gray-700 ml-2">0</span>
             </div>
-
-
+            
+            
             <div style="padding: 5px">
                 <label for="detunevoice3" class="block text-sm font-medium text-gray-700 mb-1">detune voice</label>    
                 <input id="detunevoice3" type="range" min="-5" max="5" value="0" step=".1" class="slider bg-gray-300  h-2 rounded-full outline-none"/>
                 <span id="detunevoice3display" class="text-sm text-gray-700 ml-2">0</span>
             </div>
-
+            
             
             <div class="flex-container flex-grow border-2 border-gray-800 rounded-md p-4 m-4">
                 <div id = "wave3viz" class="canvas-container">
                     <canvas id ="wave3canvas"></canvas>
                 </div>
             </div>
-
-
+            
+            
             <button id="activateVoice3" class="bg-green-700 hover:bg-green-600 text-white font-bold text-sm py-1 px-2 rounded">On</button>
         </div>
         
-        
-        
-        
-        
     </div>
+    
+    <div style="padding: 5px">
+        <label for="mastervol" class="block text-sm font-medium text-gray-700 mb-1">Master Volume</label>    
+        <input id="mastervol" type="range" min="0" max=".6" value=".2" step=".01" class="slider bg-gray-300  h-2 rounded-full outline-none"/>
+        <span id="mastervoldisplay" class="text-sm text-gray-700 ml-2">0</span>
+    </div>
+    <div>
+        
+        
+        
+        <label for="chordscales">Choose Scale:</label>
+        <select id="chordscales">
+            <option value="Cscale">C</option>
+            <option value="Dscale">D</option>
+            <option value="Esclae">E</option>
+        </select>
+        
+    </div>        
+    
+    
     <div>
         <form style="padding: 15px">
             <fieldset>
                 <legend>Chords</legend>
-
+                
                 <!-- Major Chords -->
                 <div>
-
+                    
                     <input type="radio" id="chordC" name="chordchoice" value="C" checked>
                     <label for="chordC">C</label>
                     
@@ -184,7 +200,7 @@
                     
                 </div>
                 <div>
-
+                    
                     <!-- Minor Chords -->
                     <input type="radio" id="chordCm" name="chordchoice" value="Cm">
                     <label for="chordCm">Cm</label>
@@ -207,10 +223,10 @@
                     <input type="radio" id="chordBm" name="chordchoice" value="Bm">
                     <label for="chordBm">Bm</label>
                 </div>
-                    
-                </fieldset>
-            </form>
-        </div>
+                
+            </fieldset>
+        </form>
+    </div>
     
     
     

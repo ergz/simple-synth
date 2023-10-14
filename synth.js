@@ -1,6 +1,7 @@
 let canvas;
 let analyserNode;
 let signalData;
+let masterVolume;
 
 function noteToHz(note) {
   switch (note) {
@@ -116,11 +117,12 @@ class Synth {
   createOscillator(type = "sine", freq = 440, startOctave) {
     const osc = this.audioContext.createOscillator();
     const gainNode = this.audioContext.createGain();
-    gainNode.connect(this.gain);
+    gainNode.connect(this.audioContext.destination);
     osc.type = type;
     osc.frequency.setValueAtTime(freq, this.audioContext.currentTime);
     // connect it to the gain node
     this.gain.gain.setTargetAtTime(0.1, this.audioContext.currentTime, 0);
+    gainNode.gain.setTargetAtTime(0.05, this.audioContext.currentTime, 0);
     osc.connect(this.gain);
     osc.connect(gainNode);
 
@@ -229,6 +231,8 @@ function updateFrequency(
   );
 }
 
+function updateVolume(event, synth, oscIndex, masterVolume, voiceVolume) {}
+
 function setupOctaveControls(voiceIndex, synth) {
   // Get the display element for the current voice
   let octaveDisplay = document.getElementById(
@@ -310,17 +314,30 @@ window.onload = function () {
     });
   });
 
+  // master volume
+  const masterVolumeSlider = document.getElementById("mastervol");
+  const masterVolumeDisplay = document.getElementById("mastervoldisplay");
+  masterVolumeSlider.addEventListener("input", (event) => {
+    masterVolume = parseFloat(masterVolumeSlider.value);
+    masterVolumeDisplay.textContent = masterVolume;
+    synth.gain.gain.setValueAtTime(
+      masterVolume,
+      synth.audioContext.currentTime
+    );
+  });
+
   const volumeIds = ["volumevoice1", "volumevoice2", "volumevoice3"];
 
   volumeIds.forEach((id, index) => {
     let oscillator = synth.oscillators[index];
 
     const volSlider = document.getElementById(`${id}`);
+    volSlider.setAttribute("max", synth.gain.gain.value);
     const volDisplay = document.getElementById(`${id}` + "display");
     volSlider.addEventListener("input", (event) => {
-      console.log(oscillator);
       let vol = parseFloat(volSlider.value);
-      console.log(vol);
+      volDisplay.textContent = vol;
+      volSlider.value = vol;
       oscillator.gainNode.gain.setValueAtTime(
         vol,
         synth.audioContext.currentTime
@@ -374,7 +391,13 @@ window.onload = function () {
     vizObjects.forEach((viz) => {
       viz.analyser.getByteTimeDomainData(viz.dataArray);
       viz.ctx.clearRect(0, 0, viz.canvas.width, viz.canvas.height);
-      viz.ctx.fillStyle = "black";
+      let voiceVol = synth.oscillators[viz.index].gainNode.gain.value;
+      if (masterVolume + voiceVol > 1) {
+        viz.ctx.fillStyle = "#ff5d52";
+      } else {
+        viz.ctx.fillStyle = "black";
+      }
+
       viz.ctx.fillRect(0, 0, viz.canvas.width, viz.canvas.height);
       viz.ctx.lineWidth = 2;
       viz.ctx.strokeStyle = "rgb(0, 200, 100)";
