@@ -392,7 +392,7 @@ window.onload = function () {
     const analyser = synth.audioContext.createAnalyser();
     analyser.fftSize = 2048;
 
-    synth.oscillators[index].osc.connect(analyser);
+    synth.oscillators[index].filterNode.connect(analyser);
     const bufferLength = analyser.fftSize;
     const dataArray = new Uint8Array(bufferLength);
 

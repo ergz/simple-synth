@@ -7,27 +7,27 @@
     <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
     <title>simple-synth</title>
 </head>
-<body class="bg-gray-100 p-10 mb-5">
+<body class="bg-gray-900 p-10 mb-5">
     <script src="synth.js"></script>
     <div class="flex justify-between">
         
         
-        <div class="flex-grow border-2 border-gray-800 rounded-md p-4 m-4">
+        <div class="flex-grow border-2 border-gray-600 rounded-md p-4 m-4">
             <form>
-                <legend class="text-lg mb-2">Voice 1</legend>  
+                <legend class="text-lg text-gray-300 mb-2">Voice 1</legend>  
                 <input type="radio" id="wave1_sinwave" name="wavechoice1" value="sine" checked>
-                <label for="wave1_sinwave">Sine</label>
+                <label class = "text-gray-300" wave1_sinwave">Sine</label>
                 <input type="radio" id="wave1_squarewave" name="wavechoice1" value="square">
-                <label for="wave1_squarewave">Square</label>
+                <label class = "text-gray-300" for="wave1_squarewave">Square</label>
                 <input type="radio" id="wave1_triwave" name="wavechoice1" value="triangle">
-                <label for="wave1_triwave">Triangle</label>
+                <label class = "text-gray-300" for="wave1_triwave">Triangle</label>
                 <input type="radio" id="wave1_sawtoothwave" name="wavechoice1" value="sawtooth">
-                <label for="wave1_sawtoothwave">Sawtooth</label>
+                <label class = "text-gray-300" for="wave1_sawtoothwave">Sawtooth</label>
             </form>
             
             <div class="flex items-center space-x-2 my-3">
                 <fieldset>
-                    <legend>Octave Selection</legend>
+                    <legend class = "text-gray-300">Octave Selection</legend>
                     <button id="octavedown1" class="bg-gray-400 hover:bg-gray-500 text-gray-800 font-bold py-1 px-4">-</button>
                     <input type="text" id="octavedisplay1" value="0" readonly class="text-center text-sm w-6 border py-2">
                     <button id="octaveup1" class="bg-gray-400 hover:bg-gray-500 text-gray-800 font-bold py-1 px-4">+</button>
@@ -35,15 +35,15 @@
             </div>
             
             <div style="padding: 5px">
-                <label for="volumevoice1" class="block text-sm font-medium text-gray-700 mb-1">volume voice</label>    
+                <label for="volumevoice1" class="block text-sm font-medium text-gray-300 mb-1">volume voice</label>    
                 <input id="volumevoice1" type="range" min="0" max="1" value=".3" step=".01" class="slider bg-gray-300  h-2 rounded-full outline-none"/>
-                <span id="volumevoice1display" class="text-sm text-gray-700 ml-2">0</span>
+                <span id="volumevoice1display" class="text-sm text-gray-300 ml-2">0</span>
             </div>
             
             <div style="padding: 5px">
-                <label for="detunevoice1" class="block text-sm font-medium text-gray-700 mb-1">detune voice</label>    
+                <label for="detunevoice1" class="block text-sm font-medium text-gray-300 mb-1">detune voice</label>    
                 <input id="detunevoice1" type="range" min="-5" max="5" value="0" step=".1" class="slider bg-gray-300  h-2 rounded-full outline-none"/>
-                <span id="detunevoice1display" class="text-sm text-gray-700 ml-2">0</span>
+                <span id="detunevoice1display" class="text-sm text-gray-300 ml-2">0</span>
             </div>
             
             <div class="flex-container flex-grow border-2 border-gray-800 rounded-md p-4 m-4">
@@ -56,37 +56,37 @@
             <button id="activateVoice1" class="bg-green-700 hover:bg-green-600 text-white font-bold text-sm py-1 px-2 rounded">On</button>
         </div>
         
-        <div class="flex-grow border-2 border-gray-800 rounded-md p-4 m-4">
+        <div class="flex-grow border-2  border-gray-600 rounded-md p-4 m-4">
             
             <form style="padding: 5px">
-                <legend class="text-lg mb-2">Voice 2</legend>  
+                <legend class="text-lg text-gray-300 mb-2">Voice 2</legend>  
                 <input type="radio" id="wave2_sinwave" name="wavechoice2" value="sine" checked>
-                <label for="wave2_sinwave">Sine</label>
+                <label class="text-gray-300" for="wave2_sinwave">Sine</label>
                 <input type="radio" id="wave2_squarewave" name="wavechoice2" value="square">
-                <label for="wave2_squarewave">Square</label>
+                <label class="text-gray-300" for="wave2_squarewave">Square</label>
                 <input type="radio" id="wave2_triwave" name="wavechoice2" value="triangle">
-                <label for="wave2_triwave">Triangle</label>
+                <label class="text-gray-300" for="wave2_triwave">Triangle</label>
                 <input type="radio" id="wave2_sawtoothwave" name="wavechoice2" value="sawtooth">
-                <label for="wave2_sawtoothwave">Sawtooth</label>
+                <label class="text-gray-300" for="wave2_sawtoothwave">Sawtooth</label>
             </form>
             <div class="flex items-center space-x-2 my-3">
                 <fieldset>
-                    <legend>Octave Selection</legend>
-                    <button id="octavedown2" class="bg-gray-400 hover:bg-gray-500 text-gray-800 font-bold py-1 px-4">-</button>
+                    <legend class="text-gray-300">Octave Selection</legend>
+                    <button id="octavedown2" class="bg-gray-400 hover:bg-gray-500 text-gray-300 font-bold py-1 px-4">-</button>
                     <input type="text" id="octavedisplay2" value="0" readonly style="width: 2em; text-align: center;">
                     <button id="octaveup2" class="bg-gray-400 hover:bg-gray-500 text-gray-800 font-bold py-1 px-4">+</button>
                 </fieldset>
             </div>
             
             <div style="padding: 5px">
-                <label for="volumevoice2" class="block text-sm font-medium text-gray-700 mb-1">volume voice</label>    
+                <label for="volumevoice2" class="block text-sm font-medium text-gray-300 mb-1">volume voice</label>    
                 <input id="volumevoice2" type="range" min="0" max="1" value=".3" step=".01" class="slider bg-gray-300  h-2 rounded-full outline-none"/>
                 <span id="volumevoice2display" class="text-sm text-gray-700 ml-2">0</span>
             </div>
             
             
             <div style="padding: 5px">
-                <label for="detunevoice2" class="block text-sm font-medium text-gray-700 mb-1">detune voice</label>    
+                <label for="detunevoice2" class="block text-sm font-medium text-gray-300 mb-1">detune voice</label>    
                 <input id="detunevoice2" type="range" min="-5" max="5" value="0" step=".1" class="slider bg-gray-300  h-2 rounded-full outline-none"/>
                 <span id="detunevoice2display" class="text-sm text-gray-700 ml-2">0</span>
             </div>
@@ -102,22 +102,22 @@
             <button id="activateVoice2" class="bg-green-700 hover:bg-green-600 text-white font-bold text-sm py-1 px-2 rounded">On</button>
         </div>
         
-        <div class="flex-grow border-2 border-gray-800 rounded-md p-4 m-4">
+        <div class="flex-grow border-2 border-gray-600 rounded-md p-4 m-4">
             
             <form style="padding: 5px">
-                <legend class="text-lg mb-2">Voice 3</legend>  
+                <legend class="text-lg mb-2 text-gray-300">Voice 3</legend>  
                 <input type="radio" id="wave3_sinwave" name="wavechoice3" value="sine" checked>
-                <label for="wave3_sinwave">Sine</label>
+                <label class="text-gray-300" for="wave3_sinwave">Sine</label>
                 <input type="radio" id="wave3_squarewave" name="wavechoice3" value="square">
-                <label for="wave3_squarewave">Square</label>
+                <label class="text-gray-300" for="wave3_squarewave">Square</label>
                 <input type="radio" id="wave3_triwave" name="wavechoice3" value="triangle">
-                <label for="wave3_triwave">Triangle</label>
+                <label class="text-gray-300" for="wave3_triwave">Triangle</label>
                 <input type="radio" id="wave3_sawtoothwave" name="wavechoice3" value="sawtooth">
-                <label for="wave3_sawtoothwave">Sawtooth</label>
+                <label class="text-gray-300" for="wave3_sawtoothwave">Sawtooth</label>
             </form>
             <div class="flex items-center space-x-2 my-3">
                 <fieldset>
-                    <legend>Octave Selection</legend>
+                    <legend class="text-gray-300">Octave Selection</legend>
                     <button id="octavedown3" class="bg-gray-400 hover:bg-gray-500 text-gray-800 font-bold py-1 px-4">-</button>
                     <input type="text" id="octavedisplay3" value="0" readonly style="width: 2em; text-align: center;">
                     <button id="octaveup3" class="bg-gray-400 hover:bg-gray-500 text-gray-800 font-bold py-1 px-4">+</button>
@@ -125,16 +125,16 @@
             </div>
             
             <div style="padding: 5px">
-                <label for="volumevoice3" class="block text-sm font-medium text-gray-700 mb-1">volume voice</label>    
+                <label for="volumevoice3" class="block text-sm font-medium text-gray-300 mb-1">volume voice</label>    
                 <input id="volumevoice3" type="range" min="0" max="1" value=".3" step=".01" class="slider bg-gray-300  h-2 rounded-full outline-none"/>
-                <span id="volumevoice3display" class="text-sm text-gray-700 ml-2">0</span>
+                <span id="volumevoice3display" class="text-sm text-gray-300 ml-2">0</span>
             </div>
             
             
             <div style="padding: 5px">
-                <label for="detunevoice3" class="block text-sm font-medium text-gray-700 mb-1">detune voice</label>    
+                <label for="detunevoice3" class="block text-sm font-medium text-gray-300 mb-1">detune voice</label>    
                 <input id="detunevoice3" type="range" min="-5" max="5" value="0" step=".1" class="slider bg-gray-300  h-2 rounded-full outline-none"/>
-                <span id="detunevoice3display" class="text-sm text-gray-700 ml-2">0</span>
+                <span id="detunevoice3display" class="text-sm text-gray-300 ml-2">0</span>
             </div>
             
             
@@ -151,15 +151,15 @@
     </div>
     
     <div style="padding: 5px">
-        <label for="mastervol" class="block text-sm font-medium text-gray-700 mb-1">Master Volume</label>    
+        <label for="mastervol" class="block text-sm font-medium text-gray-300 mb-1">Master Volume</label>    
         <input id="mastervol" type="range" min="0" max=".6" value=".2" step=".01" class="slider bg-gray-300  h-2 rounded-full outline-none"/>
-        <span id="mastervoldisplay" class="text-sm text-gray-700 ml-2">0</span>
+        <span id="mastervoldisplay" class="text-sm text-gray-300 ml-2">0</span>
     </div>
     <div>
         
         
         
-        <label for="chordscales">Choose Scale:</label>
+        <label class = "text-gray-300" for="chordscales">Choose Scale:</label>
         <select id="chordscales">
             <option value="Cscale">C</option>
             <option value="Dscale">D</option>
@@ -172,56 +172,56 @@
     <div>
         <form style="padding: 15px">
             <fieldset>
-                <legend>Chords</legend>
+                <legend class="text-gray-300">Chords</legend>
                 
                 <!-- Major Chords -->
                 <div>
                     
                     <input type="radio" id="chordC" name="chordchoice" value="C" checked>
-                    <label for="chordC">C</label>
+                    <label class="text-gray-300" for="chordC">C</label>
                     
                     <input type="radio" id="chordD" name="chordchoice" value="D">
-                    <label for="chordD">D</label>
+                    <label class="text-gray-300" for="chordD">D</label>
                     
                     <input type="radio" id="chordE" name="chordchoice" value="E">
-                    <label for="chordE">E</label>
+                    <label class="text-gray-300" for="chordE">E</label>
                     
                     <input type="radio" id="chordF" name="chordchoice" value="F">
-                    <label for="chordF">F</label>
+                    <label class="text-gray-300" for="chordF">F</label>
                     
                     <input type="radio" id="chordG" name="chordchoice" value="G">
-                    <label for="chordG">G</label>
+                    <label class="text-gray-300" for="chordG">G</label>
                     
                     <input type="radio" id="chordA" name="chordchoice" value="A">
-                    <label for="chordA">A</label>
+                    <label class="text-gray-300" for="chordA">A</label>
                     
                     <input type="radio" id="chordB" name="chordchoice" value="B">
-                    <label for="chordB">B</label>
+                    <label class="text-gray-300" for="chordB">B</label>
                     
                 </div>
                 <div>
                     
                     <!-- Minor Chords -->
                     <input type="radio" id="chordCm" name="chordchoice" value="Cm">
-                    <label for="chordCm">Cm</label>
+                    <label class="text-gray-300" for="chordCm">Cm</label>
                     
                     <input type="radio" id="chordDm" name="chordchoice" value="Dm">
-                    <label for="chordDm">Dm</label>
+                    <label class="text-gray-300" for="chordDm">Dm</label>
                     
                     <input type="radio" id="chordEm" name="chordchoice" value="Em">
-                    <label for="chordEm">Em</label>
+                    <label class="text-gray-300" for="chordEm">Em</label>
                     
                     <input type="radio" id="chordFm" name="chordchoice" value="Fm">
-                    <label for="chordFm">Fm</label>
+                    <label class="text-gray-300" for="chordFm">Fm</label>
                     
                     <input type="radio" id="chordGm" name="chordchoice" value="Gm">
-                    <label for="chordGm">Gm</label>
+                    <label class="text-gray-300" for="chordGm">Gm</label>
                     
                     <input type="radio" id="chordAm" name="chordchoice" value="Am">
-                    <label for="chordAm">Am</label>
+                    <label class="text-gray-300" for="chordAm">Am</label>
                     
                     <input type="radio" id="chordBm" name="chordchoice" value="Bm">
-                    <label for="chordBm">Bm</label>
+                    <label class="text-gray-300" for="chordBm">Bm</label>
                 </div>
                 
             </fieldset>
@@ -229,14 +229,14 @@
     </div>
  
     <div style="padding: 5px">
-        <label for="filter" class="block text-sm font-medium text-gray-700 mb-1">filter</label>    
+        <label for="filter" class="block text-sm font-medium text-gray-300 mb-1">filter</label>    
         <input id="filter" type="range" min="0" max="900" value="5000" step="1" class="slider bg-gray-300  h-2 rounded-full outline-none"/>
-        <span id="filterdisplay" class="text-sm text-gray-700 ml-2">0</span>
+        <span id="filterdisplay" class="text-sm text-gray-300 ml-2">0</span>
     </div>
     <div style="padding: 5px">
-        <label for="Q" class="block text-sm font-medium text-gray-700 mb-1">Q</label>    
+        <label for="Q" class="block text-sm font-medium text-gray-300 mb-1">Q</label>    
         <input id="Q" type="range" min="0" max="100" value="0" step="1" class="slider bg-gray-300  h-2 rounded-full outline-none"/>
-        <span id="Qdisplay" class="text-sm text-gray-700 ml-2">0</span>
+        <span id="Qdisplay" class="text-sm text-gray-300 ml-2">0</span>
     </div>
     
 </body>
